@@ -12,11 +12,25 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   const [distillery, setDistillery] = useState(bottle.distillery ?? "");
   const [vintage, setVintage] = useState(bottle.vintage ?? "");
   const [notes, setNotes] = useState(bottle.notes ?? "");
+  const [abv, setAbv] = useState(bottle.abv ?? "");
+  const [bottleSize, setBottleSize] = useState(bottle.bottle_size ?? "");
+  const [region, setRegion] = useState(bottle.region ?? "");
+  const [caskType, setCaskType] = useState(bottle.cask_type ?? "");
+  const [age, setAge] = useState(bottle.age ?? "");
+  const [bottlingYear, setBottlingYear] = useState(bottle.bottling_year ?? "");
+  const [pricePaidValue, setPricePaidValue] = useState(
+    bottle.price_paid_value ?? ""
+  );
+  const [pricePaidCurrency, setPricePaidCurrency] = useState(
+    bottle.price_paid_currency ?? ""
+  );
+  const [rating, setRating] = useState(bottle.rating ?? "");
+  const [favorite, setFavorite] = useState(bottle.favorite ?? false);
+
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setErrorMsg(null);
 
     try {
@@ -27,6 +41,17 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           distillery,
           vintage,
           notes,
+          abv: abv === "" ? null : abv,
+          bottle_size: bottleSize === "" ? null : bottleSize,
+          region,
+          cask_type: caskType,
+          age: age === "" ? null : age,
+          bottling_year: bottlingYear === "" ? null : bottlingYear,
+          price_paid_value: pricePaidValue === "" ? null : pricePaidValue,
+          price_paid_currency:
+            pricePaidCurrency === "" ? null : setPricePaidCurrency,
+          rating: rating === "" ? null : rating,
+          favorite,
         })
         .eq("id", bottle.id);
 
@@ -35,11 +60,10 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
         throw error;
       }
 
-      router.refresh(); // revalidate server data
+      router.refresh();
       router.push(`/shelf/${bottle.shelf_id}`);
     } catch (err: any) {
       setErrorMsg(err.message || "Something went wrong.");
-    } finally {
     }
   };
 
@@ -59,46 +83,148 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
       router.push(`/shelf/${bottle.shelf_id}`);
     } catch (err: any) {
       setErrorMsg(err.message || "Something went wrong.");
-    } finally {
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
+    <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
       {errorMsg && <p className="text-red-500">{errorMsg}</p>}
 
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-        required
-      />
+      <div className="space-y-4">
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+          required
+        />
 
-      <input
-        type="text"
-        placeholder="Distillery"
-        value={distillery}
-        onChange={(e) => setDistillery(e.target.value)}
-        className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-      />
+        <input
+          type="text"
+          placeholder="Distillery"
+          value={distillery}
+          onChange={(e) => setDistillery(e.target.value)}
+          className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+        />
 
-      <input
-        type="text"
-        placeholder="Vintage"
-        value={vintage}
-        onChange={(e) => setVintage(e.target.value)}
-        className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-      />
+        <input
+          type="text"
+          placeholder="Vintage"
+          value={vintage}
+          onChange={(e) => setVintage(e.target.value)}
+          className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+        />
 
-      <textarea
-        placeholder="Notes"
-        value={notes}
-        onChange={(e) => setNotes(e.target.value)}
-        className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-        rows={4}
-      />
+        <textarea
+          placeholder="Notes"
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+          rows={4}
+        />
+      </div>
+
+      <div className="pt-6 mt-6 border-t border-zinc-700 space-y-4">
+        <h2 className="text-xl font-bold mb-2">Additional details</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <input
+            type="number"
+            step="0.1"
+            placeholder="ABV (%)"
+            value={abv}
+            onChange={(e) =>
+              setAbv(e.target.value === "" ? "" : parseFloat(e.target.value))
+            }
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="number"
+            placeholder="Size (ml)"
+            value={bottleSize}
+            onChange={(e) =>
+              setBottleSize(
+                e.target.value === "" ? "" : parseInt(e.target.value)
+              )
+            }
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="text"
+            placeholder="Region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="text"
+            placeholder="Cask type"
+            value={caskType}
+            onChange={(e) => setCaskType(e.target.value)}
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="number"
+            placeholder="Age"
+            value={age}
+            onChange={(e) =>
+              setAge(e.target.value === "" ? "" : parseInt(e.target.value))
+            }
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="number"
+            placeholder="Bottling year"
+            value={bottlingYear}
+            onChange={(e) =>
+              setBottlingYear(
+                e.target.value === "" ? "" : parseInt(e.target.value)
+              )
+            }
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="number"
+            step="0.01"
+            placeholder="Price paid"
+            value={pricePaidValue}
+            onChange={(e) =>
+              setPricePaidValue(
+                e.target.value === "" ? "" : parseFloat(e.target.value)
+              )
+            }
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+
+          <input
+            type="text"
+            placeholder="Currency (e.g. SEK, USD)"
+            value={pricePaidCurrency}
+            onChange={(e) => setPricePaidCurrency(e.target.value)}
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="number"
+            min="0"
+            max="100"
+            placeholder="Rating"
+            value={rating}
+            onChange={(e) =>
+              setRating(e.target.value === "" ? "" : parseInt(e.target.value))
+            }
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+        </div>
+        <label className="inline-flex items-center mt-2">
+          <input
+            type="checkbox"
+            checked={favorite}
+            onChange={(e) => setFavorite(e.target.checked)}
+            className="mr-2"
+          />
+          <span className="text-zinc-300">Mark as favorite ⭐</span>
+        </label>
+      </div>
 
       <button
         type="submit"
@@ -106,6 +232,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
       >
         Save changes
       </button>
+
       <ConfirmModal
         title="Delete bottle"
         message="Are you sure you want to delete this bottle?"

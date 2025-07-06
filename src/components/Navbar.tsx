@@ -19,9 +19,7 @@ export default function Navbar() {
         <div className="flex items-center gap-6 text-lg">
           <Link
             href="/dashboard"
-            className={`hover:text-orange-400 transition ${
-              pathname === "/dashboard" ? "text-orange-400" : "text-zinc-300"
-            }`}
+            className={"hover:text-orange-400 transition "}
           >
             Dashboard
           </Link>

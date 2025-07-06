@@ -51,7 +51,7 @@ export default async function ShelfPage({
             href="/new"
             className="bg-orange-600 hover:bg-orange-700 py-2 px-6 rounded-xl text-lg font-semibold transition shadow hover:shadow-orange-600/40"
           >
-            ➕ Add new bottle
+            Add new bottle
           </Link>
         </div>
 

@@ -30,7 +30,7 @@ export default async function DashboardPage() {
     <>
       <Navbar />
       <main className="min-h-screen bg-zinc-900 text-white p-8 flex flex-col items-center">
-        <h1 className="text-4xl font-extrabold mb-6">Welcome, {user.email}!</h1>
+        <h1 className="text-xl font-extrabold mb-6">Signed in, {user.email}</h1>
         <LogoutButton />
 
         {!shelf ? (
@@ -52,7 +52,7 @@ export default async function DashboardPage() {
                 type="submit"
                 className="bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow"
               >
-                ➕ Create your shelf
+                Create your shelf
               </button>
             </form>
           </>

@@ -6,7 +6,7 @@ export default function ConfirmModal({
   onConfirm,
   title,
   message,
-  confirmText = "Yes, delete",
+  confirmText = "Yes",
   children,
 }: {
   onConfirm: () => void;
