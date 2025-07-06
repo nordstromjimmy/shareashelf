@@ -50,7 +50,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           bottling_year: bottlingYear === "" ? null : bottlingYear,
           price_paid_value: pricePaidValue === "" ? null : pricePaidValue,
           price_paid_currency:
-            pricePaidCurrency === "" ? null : setPricePaidCurrency,
+            pricePaidCurrency === "" ? null : pricePaidCurrency,
           rating: rating === "" ? null : rating,
           favorite,
           top_shelf: topShelf,

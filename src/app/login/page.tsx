@@ -74,6 +74,15 @@ export default function LoginPage() {
         >
           Login
         </button>
+        <div className="mt-6 text-center text-zinc-400">
+          Not a member?{" "}
+          <a
+            href="/register"
+            className="text-orange-400 hover:text-orange-500 font-semibold"
+          >
+            Sign up
+          </a>
+        </div>
       </div>
     </div>
   );

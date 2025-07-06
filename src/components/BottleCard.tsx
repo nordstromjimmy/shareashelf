@@ -1,6 +1,6 @@
 "use client";
 
-import { Award, Star } from "lucide-react";
+import { Star, Trophy } from "lucide-react";
 import { Bottle } from "../types/bottle";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ export default function BottleCard({ bottle }: { bottle: Bottle }) {
       {/* Top shelf badge */}
       {bottle.top_shelf && (
         <div className="absolute top-2 left-2" title="Top shelf">
-          <Award className="w-5 h-5 text-red-600" />
+          <Trophy className="w-5 h-5 text-yellow-400" />
         </div>
       )}
 

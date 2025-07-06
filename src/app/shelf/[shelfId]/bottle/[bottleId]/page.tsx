@@ -1,7 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Star, Trophy } from "lucide-react";
 
 export default async function BottleDetailsPage({
   params,
@@ -11,7 +11,6 @@ export default async function BottleDetailsPage({
   const { bottleId, shelfId } = await params;
   const supabase = createSupabaseServerClient();
 
-  // Fetch bottle
   const { data: bottle } = await supabase
     .from("bottles")
     .select("*")
@@ -38,21 +37,30 @@ export default async function BottleDetailsPage({
           </Link>
         </div>
 
-        <div className="bg-zinc-800 p-6 rounded-xl shadow mb-6">
-          <img
-            src={bottle.image_url || "/bottle.png"}
-            alt={bottle.name}
-            className="w-full h-80 object-contain mb-6 rounded"
-          />
+        <div className="bg-zinc-800 p-6 rounded-xl shadow mb-6 relative">
+          <div className="relative mb-6">
+            {bottle.top_shelf && (
+              <div className="absolute top-2 left-2" title="Top shelf">
+                <Trophy className="w-6 h-6 text-yellow-400" />
+              </div>
+            )}
+            {bottle.favorite && (
+              <div
+                className="absolute top-2 right-2 text-yellow-400"
+                title="Favorite"
+              >
+                <Star className="w-6 h-6 fill-yellow-400" />
+              </div>
+            )}
+            <img
+              src={bottle.image_url || "/bottle.png"}
+              alt={bottle.name}
+              className="w-full h-80 object-contain rounded"
+            />
+          </div>
 
           <h1 className="text-3xl font-extrabold mb-2 flex items-center gap-2">
             {bottle.name}
-
-            {bottle.favorite && (
-              <span className="text-yellow-400 text-2xl">
-                <Star className="w-5 h-5 fill-yellow-400" />
-              </span>
-            )}
           </h1>
 
           <div className="space-y-1 text-zinc-400">

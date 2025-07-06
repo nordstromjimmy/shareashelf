@@ -76,6 +76,15 @@ export default function AuthPage() {
         >
           Create account
         </button>
+        <div className="mt-6 text-center text-zinc-400">
+          Already registered?{" "}
+          <a
+            href="/login"
+            className="text-orange-400 hover:text-orange-500 font-semibold"
+          >
+            Log in
+          </a>
+        </div>
       </div>
     </div>
   );
