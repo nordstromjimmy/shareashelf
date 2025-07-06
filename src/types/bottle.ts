@@ -20,4 +20,5 @@ export type Bottle = {
   current_value: number | null; // updated over time
   rating: number | null; // 1-100 personal score
   favorite: boolean; // true / false
+  top_shelf: boolean;
 };

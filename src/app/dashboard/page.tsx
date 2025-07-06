@@ -50,7 +50,7 @@ export default async function DashboardPage() {
               />
               <button
                 type="submit"
-                className="bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow"
+                className="bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow cursor-pointer"
               >
                 Create your shelf
               </button>

@@ -4,6 +4,7 @@ import BottleCard from "@/components/BottleCard";
 import { Bottle } from "@/types/bottle";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import { Settings } from "lucide-react";
 
 export default async function ShelfPage({
   params,
@@ -26,16 +27,20 @@ export default async function ShelfPage({
     .from("bottles")
     .select("*")
     .eq("shelf_id", shelf.id)
+    .order("top_shelf", { ascending: false })
     .order("created_at", { ascending: false });
 
   bottles as Bottle[];
+
+  const topShelfBottles = bottles?.filter((b) => b.top_shelf) ?? [];
+  const regularBottles = bottles?.filter((b) => !b.top_shelf) ?? [];
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen bg-zinc-900 text-white px-6 py-12 flex flex-col items-center">
-        <div className="w-full max-w-5xl mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+        <div className="w-full max-w-5xl mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row items-center gap-4 justify-center sm:justify-start">
             <h1 className="text-3xl sm:text-4xl font-extrabold">
               {shelf.name}
             </h1>
@@ -44,7 +49,7 @@ export default async function ShelfPage({
               className="text-zinc-400 hover:text-orange-400 text-2xl"
               title="Edit shelf"
             >
-              ✏️
+              <Settings className="w-6 h-6" />
             </Link>
           </div>
           <Link
@@ -55,14 +60,40 @@ export default async function ShelfPage({
           </Link>
         </div>
 
-        {bottles && bottles.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl">
-            {bottles.map((bottle) => (
-              <BottleCard key={bottle.id} bottle={bottle} />
-            ))}
-          </div>
+        {/* Top shelf section */}
+        {topShelfBottles.length > 0 && (
+          <>
+            <h2 className="text-2xl font-bold mb-4 w-full max-w-5xl text-center sm:text-left">
+              Top shelf
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl mb-10">
+              {topShelfBottles.map((bottle) => (
+                <BottleCard key={bottle.id} bottle={bottle} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Regular bottles */}
+        {regularBottles.length > 0 ? (
+          <>
+            {topShelfBottles.length > 0 && (
+              <h2 className="text-2xl font-bold mb-4 w-full max-w-5xl text-center sm:text-left">
+                Other bottles
+              </h2>
+            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl mb-10">
+              {regularBottles.map((bottle) => (
+                <BottleCard key={bottle.id} bottle={bottle} />
+              ))}
+            </div>
+          </>
         ) : (
-          <p className="text-zinc-400">This shelf has no bottles yet.</p>
+          topShelfBottles.length === 0 && (
+            <p className="text-zinc-400 mb-10">
+              This shelf has no bottles yet.
+            </p>
+          )
         )}
       </main>
     </>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Award, Star } from "lucide-react";
 import { Bottle } from "../types/bottle";
 import Link from "next/link";
 
@@ -9,9 +10,21 @@ export default function BottleCard({ bottle }: { bottle: Bottle }) {
       href={`/shelf/${bottle.shelf_id}/bottle/${bottle.id}`}
       className="relative bg-zinc-800 p-4 rounded-xl shadow hover:scale-105 transition-transform w-full max-w-xs mx-auto block"
     >
+      {/* Top shelf badge */}
+      {bottle.top_shelf && (
+        <div className="absolute top-2 left-2" title="Top shelf">
+          <Award className="w-5 h-5 text-red-600" />
+        </div>
+      )}
+
       {/* Favorite star */}
       {bottle.favorite && (
-        <div className="absolute top-2 right-2 text-yellow-400 text-xl">⭐</div>
+        <div
+          className="absolute top-2 right-2 text-yellow-400"
+          title="Favorite"
+        >
+          <Star className="w-5 h-5 fill-yellow-400" />
+        </div>
       )}
 
       <img

@@ -45,7 +45,7 @@ export default function AuthPage() {
 
         <button
           onClick={handleGoogleSignIn}
-          className="flex items-center justify-center gap-3 bg-white text-zinc-900 font-semibold py-3 px-6 rounded-lg hover:bg-zinc-100 transition w-full mb-6 shadow"
+          className="flex items-center justify-center gap-3 bg-white text-zinc-900 font-semibold py-3 px-6 rounded-lg hover:bg-zinc-100 transition w-full mb-6 shadow cursor-pointer"
         >
           <Image src="/google-icon.svg" alt="Google" width={24} height={24} />
           Sign in with Google
@@ -72,7 +72,7 @@ export default function AuthPage() {
 
         <button
           onClick={handleSignUp}
-          className="mt-6 w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-lg text-xl font-semibold transition shadow"
+          className="mt-6 w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-lg text-xl font-semibold transition shadow cursor-pointer"
         >
           Create account
         </button>

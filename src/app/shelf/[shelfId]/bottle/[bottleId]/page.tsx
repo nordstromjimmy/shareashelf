@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { Star } from "lucide-react";
 
 export default async function BottleDetailsPage({
   params,
@@ -46,8 +47,11 @@ export default async function BottleDetailsPage({
 
           <h1 className="text-3xl font-extrabold mb-2 flex items-center gap-2">
             {bottle.name}
+
             {bottle.favorite && (
-              <span className="text-yellow-400 text-2xl">⭐</span>
+              <span className="text-yellow-400 text-2xl">
+                <Star className="w-5 h-5 fill-yellow-400" />
+              </span>
             )}
           </h1>
 

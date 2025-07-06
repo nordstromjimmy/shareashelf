@@ -25,14 +25,6 @@ export default function Home() {
           >
             Build your shelf now
           </a>
-          <div className="mt-6">
-            <a
-              href="#learn-more"
-              className="text-zinc-400 hover:text-zinc-200 transition"
-            >
-              Learn more ↓
-            </a>
-          </div>
         </div>
       </div>
     </main>

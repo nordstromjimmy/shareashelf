@@ -64,7 +64,7 @@ export default function EditShelfForm({
       />
       <button
         type="submit"
-        className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40"
+        className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
       >
         Save changes
       </button>
@@ -75,7 +75,7 @@ export default function EditShelfForm({
       >
         <button
           type="button"
-          className="w-full bg-red-600 hover:bg-red-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-red-600/40"
+          className="w-full bg-red-600 hover:bg-red-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-red-600/40 cursor-pointer"
         >
           Delete shelf
         </button>

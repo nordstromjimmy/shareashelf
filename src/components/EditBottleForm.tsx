@@ -26,6 +26,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   );
   const [rating, setRating] = useState(bottle.rating ?? "");
   const [favorite, setFavorite] = useState(bottle.favorite ?? false);
+  const [topShelf, setTopShelf] = useState(bottle.top_shelf ?? false);
 
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -52,6 +53,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
             pricePaidCurrency === "" ? null : setPricePaidCurrency,
           rating: rating === "" ? null : rating,
           favorite,
+          top_shelf: topShelf,
         })
         .eq("id", bottle.id);
 
@@ -215,20 +217,32 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
             className="p-3 bg-zinc-800 border border-zinc-700 rounded"
           />
         </div>
-        <label className="inline-flex items-center mt-2">
-          <input
-            type="checkbox"
-            checked={favorite}
-            onChange={(e) => setFavorite(e.target.checked)}
-            className="mr-2"
-          />
-          <span className="text-zinc-300">Mark as favorite ⭐</span>
-        </label>
+        <div className="flex justify-between items-center mt-4">
+          <label className="inline-flex items-center">
+            <input
+              type="checkbox"
+              checked={favorite}
+              onChange={(e) => setFavorite(e.target.checked)}
+              className="mr-2"
+            />
+            <span className="text-zinc-300">Mark as favorite</span>
+          </label>
+
+          <label className="inline-flex items-center">
+            <input
+              type="checkbox"
+              checked={topShelf}
+              onChange={(e) => setTopShelf(e.target.checked)}
+              className="mr-2"
+            />
+            <span className="text-zinc-300">Move to top shelf</span>
+          </label>
+        </div>
       </div>
 
       <button
         type="submit"
-        className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40"
+        className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
       >
         Save changes
       </button>
@@ -240,7 +254,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
       >
         <button
           type="button"
-          className="w-full bg-red-600 hover:bg-red-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-red-600/40"
+          className="w-full bg-red-600 hover:bg-red-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-red-600/40 cursor-pointer"
         >
           Delete bottle
         </button>

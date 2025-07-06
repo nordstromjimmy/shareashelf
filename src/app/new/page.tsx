@@ -27,6 +27,7 @@ export default function NewBottlePage() {
   const [pricePaidCurrency, setPricePaidCurrency] = useState<string | "">("");
   const [rating, setRating] = useState<number | "">("");
   const [favorite, setFavorite] = useState(false);
+  const [topShelf, setTopShelf] = useState(false);
 
   useEffect(() => {
     const loadShelf = async () => {
@@ -80,6 +81,7 @@ export default function NewBottlePage() {
           pricePaidCurrency === "" ? null : pricePaidCurrency,
         rating: rating === "" ? null : rating,
         favorite,
+        top_shelf: topShelf,
       });
 
       if (error) throw error;
@@ -222,21 +224,33 @@ export default function NewBottlePage() {
               className="p-3 bg-zinc-800 border border-zinc-700 rounded"
             />
           </div>
-          <label className="inline-flex items-center mt-2">
-            <input
-              type="checkbox"
-              checked={favorite}
-              onChange={(e) => setFavorite(e.target.checked)}
-              className="mr-2"
-            />
-            <span className="text-zinc-300">Mark as favorite ⭐</span>
-          </label>
+          <div className="flex justify-between items-center mt-4">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={favorite}
+                onChange={(e) => setFavorite(e.target.checked)}
+                className="mr-2"
+              />
+              <span className="text-zinc-300">Mark as favorite ⭐</span>
+            </label>
+
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={topShelf}
+                onChange={(e) => setTopShelf(e.target.checked)}
+                className="mr-2"
+              />
+              <span className="text-zinc-300">Move to top shelf 🥇</span>
+            </label>
+          </div>
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40"
+          className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
         >
           {loading ? "Saving..." : "Save bottle"}
         </button>
