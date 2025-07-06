@@ -1,8 +1,20 @@
+"use client";
+
 import { Bottle } from "../types/bottle";
+import Link from "next/link";
 
 export default function BottleCard({ bottle }: { bottle: Bottle }) {
   return (
-    <div className="bg-zinc-800 p-3 rounded-xl shadow hover:scale-105 transition-transform duration-200 w-full max-w-xs mx-auto">
+    <div className="relative bg-zinc-800 p-4 rounded-xl shadow hover:scale-105 transition-transform w-full max-w-xs mx-auto">
+      {/* Settings icon top right */}
+      <Link
+        href={`/edit/${bottle.id}`}
+        className="absolute top-2 right-2 text-zinc-400 hover:text-orange-400 text-xl"
+        title="Edit bottle"
+      >
+        ⚙️
+      </Link>
+
       <img
         src={bottle.image_url || "/bottle.png"}
         alt={bottle.name}

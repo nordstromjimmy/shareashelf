@@ -8,14 +8,16 @@ import Navbar from "@/components/Navbar";
 export default async function ShelfPage({
   params,
 }: {
-  params: { shelfId: string };
+  params: Promise<{ shelfId: string }>;
 }) {
+  const { shelfId } = await params;
+
   const supabase = createSupabaseServerClient();
 
   const { data: shelf } = await supabase
     .from("shelves")
     .select("*")
-    .eq("id", params.shelfId)
+    .eq("id", shelfId)
     .single();
 
   if (!shelf) notFound();
@@ -33,12 +35,23 @@ export default async function ShelfPage({
       <Navbar />
       <main className="min-h-screen bg-zinc-900 text-white px-6 py-12 flex flex-col items-center">
         <div className="w-full max-w-5xl mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <h1 className="text-3xl sm:text-4xl font-extrabold">{shelf.name}</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-3xl sm:text-4xl font-extrabold">
+              {shelf.name}
+            </h1>
+            <Link
+              href={`/edit-shelf/${shelf.id}`}
+              className="text-zinc-400 hover:text-orange-400 text-2xl"
+              title="Edit shelf"
+            >
+              ✏️
+            </Link>
+          </div>
           <Link
             href="/new"
             className="bg-orange-600 hover:bg-orange-700 py-2 px-6 rounded-xl text-lg font-semibold transition shadow hover:shadow-orange-600/40"
           >
-            Add new bottle
+            ➕ Add new bottle
           </Link>
         </div>
 
