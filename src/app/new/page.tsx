@@ -87,8 +87,12 @@ export default function NewBottlePage() {
       if (error) throw error;
 
       router.push(`/shelf/${shelfId}`);
-    } catch (err: any) {
-      setErrorMsg(err.message || "Something went wrong.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg("Something went wrong.");
+      }
     } finally {
       setLoading(false);
     }

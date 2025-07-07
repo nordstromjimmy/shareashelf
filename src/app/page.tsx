@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-zinc-900 text-white flex flex-col items-center justify-center px-6 overflow-hidden">
@@ -9,10 +11,13 @@ export default function Home() {
 
       <div className="max-w-2xl text-center z-10 animate-fade-in">
         {/* Logo */}
-        <img
+
+        <Image
           src="/logo.png"
+          className="mx-auto"
+          width={160}
+          height={12}
           alt="TopShelfy logo"
-          className="mx-auto w-48 mb-8"
         />
 
         <h1 className="text-5xl md:text-6xl font-extrabold mb-6">

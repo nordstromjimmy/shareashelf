@@ -25,10 +25,12 @@ export default function EditShelfForm({
 
       router.push(`/shelf/${shelf.id}`);
       router.refresh();
-    } catch (err: any) {
-      console.error("Update error:", err);
-      setErrorMsg(err.message || "Something went wrong.");
-    } finally {
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg("Something went wrong.");
+      }
     }
   };
 
@@ -43,10 +45,12 @@ export default function EditShelfForm({
 
       router.push("/dashboard");
       router.refresh();
-    } catch (err: any) {
-      console.error("Delete error:", err);
-      setErrorMsg(err.message || "Something went wrong.");
-    } finally {
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg("Something went wrong.");
+      }
     }
   };
 

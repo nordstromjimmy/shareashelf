@@ -1,7 +1,6 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
 import { notFound } from "next/navigation";
 import BottleCard from "@/components/BottleCard";
-import { Bottle } from "@/types/bottle";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { Settings } from "lucide-react";
@@ -30,7 +29,7 @@ export default async function ShelfPage({
     .order("top_shelf", { ascending: false })
     .order("created_at", { ascending: false });
 
-  bottles as Bottle[];
+  //bottles as Bottle[];
 
   const topShelfBottles = bottles?.filter((b) => b.top_shelf) ?? [];
   const regularBottles = bottles?.filter((b) => !b.top_shelf) ?? [];

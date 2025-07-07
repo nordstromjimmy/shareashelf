@@ -1,12 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 export default function Navbar() {
-  const pathname = usePathname();
-
   return (
     <nav className="w-full bg-zinc-900 border-b border-zinc-700 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">

@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import { Star, Trophy } from "lucide-react";
 import { Bottle } from "../types/bottle";
 import Link from "next/link";
@@ -27,10 +27,12 @@ export default function BottleCard({ bottle }: { bottle: Bottle }) {
         </div>
       )}
 
-      <img
+      <Image
         src={bottle.image_url || "/bottle.png"}
+        width={148}
+        height={12}
+        className="w-full sm:h-40 object-contain rounded mb-3"
         alt={bottle.name}
-        className="w-full h-36 sm:h-40 object-contain rounded mb-3"
       />
 
       <h2 className="text-lg font-bold mb-1 truncate">{bottle.name}</h2>

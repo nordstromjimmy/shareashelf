@@ -2,6 +2,7 @@ import { createSupabaseServerClient } from "@/lib/supabaseServer";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Star, Trophy } from "lucide-react";
+import Image from "next/image";
 
 export default async function BottleDetailsPage({
   params,
@@ -52,10 +53,13 @@ export default async function BottleDetailsPage({
                 <Star className="w-6 h-6 fill-yellow-400" />
               </div>
             )}
-            <img
+
+            <Image
               src={bottle.image_url || "/bottle.png"}
+              width={160}
+              height={12}
+              className="w-full object-contain rounded"
               alt={bottle.name}
-              className="w-full h-80 object-contain rounded"
             />
           </div>
 

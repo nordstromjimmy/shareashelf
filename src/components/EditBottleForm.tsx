@@ -64,8 +64,12 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
 
       router.refresh();
       router.push(`/shelf/${bottle.shelf_id}`);
-    } catch (err: any) {
-      setErrorMsg(err.message || "Something went wrong.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg("Something went wrong.");
+      }
     }
   };
 
@@ -83,8 +87,12 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
 
       router.refresh();
       router.push(`/shelf/${bottle.shelf_id}`);
-    } catch (err: any) {
-      setErrorMsg(err.message || "Something went wrong.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg("Something went wrong.");
+      }
     }
   };
 
