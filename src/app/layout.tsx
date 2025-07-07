@@ -4,16 +4,17 @@ import "./globals.css";
 export const metadata = {
   title: "TopShelfy - Your Digital Shelf",
   description:
-    "Create a stunning digital whiskey shelf, add tasting notes, and share with friends in minutes.",
+    "Create a stunning digital liqour shelf, add tasting notes, and share with friends in minutes.",
   keywords: [
     "whiskey collection",
     "whiskey shelf",
     "digital shelf",
+    "liqour shelf",
     "top shelf",
     "whiskey tasting notes",
   ],
   openGraph: {
-    title: "TopShelf - Your Digital Whiskey Shelf",
+    title: "TopShelf - Your Digital Liqour Shelf",
     description: "Show off your whiskey bottles and tasting notes online.",
     url: "https://topshelf.com",
     siteName: "TopShelf",

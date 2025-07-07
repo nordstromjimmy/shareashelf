@@ -33,13 +33,12 @@ export default async function ShelfPage({
     .order("top_shelf", { ascending: false })
     .order("created_at", { ascending: false });
 
-  //bottles as Bottle[];
-
   const topShelfBottles = bottles?.filter((b) => b.top_shelf) ?? [];
   const favoriteBottles =
     bottles?.filter((b) => b.favorite && !b.top_shelf) ?? [];
   const regularBottles =
     bottles?.filter((b) => !b.top_shelf && !b.favorite) ?? [];
+
   return (
     <>
       <Navbar />
@@ -64,6 +63,7 @@ export default async function ShelfPage({
             Add new bottle
           </Link>
         </div>
+
         {/* Top shelf section */}
         {topShelfBottles.length > 0 && (
           <>
@@ -78,10 +78,24 @@ export default async function ShelfPage({
           </>
         )}
 
+        {/* Favorites section */}
+        {favoriteBottles.length > 0 && (
+          <>
+            <h2 className="text-2xl font-bold mb-4 w-full max-w-5xl text-center sm:text-left">
+              Favorites
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl mb-10">
+              {favoriteBottles.map((bottle) => (
+                <BottleCard key={bottle.id} bottle={bottle} />
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Regular bottles */}
         {regularBottles.length > 0 ? (
           <>
-            {topShelfBottles.length > 0 && (
+            {(topShelfBottles.length > 0 || favoriteBottles.length > 0) && (
               <h2 className="text-2xl font-bold mb-4 w-full max-w-5xl text-center sm:text-left">
                 Other bottles
               </h2>
@@ -93,7 +107,8 @@ export default async function ShelfPage({
             </div>
           </>
         ) : (
-          topShelfBottles.length === 0 && (
+          topShelfBottles.length === 0 &&
+          favoriteBottles.length === 0 && (
             <p className="text-zinc-400 mb-10">
               This shelf has no bottles yet.
             </p>
@@ -111,7 +126,7 @@ export default async function ShelfPage({
         background={shelf.background_theme ?? "dark_wood"}
         ownerName={shelf.owner_name ?? "Collector"}
         customizable
-        shareUrl={`${process.env.NEXT_PUBLIC_SITE_URL}/showroom/${shelf.id}`}
+        shareUrl={shareUrl}
         shelfId={shelf.id}
       />
     </>
