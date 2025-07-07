@@ -4,6 +4,8 @@ import BottleCard from "@/components/BottleCard";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { Settings } from "lucide-react";
+import Showroom from "@/components/Showroom";
+import ShareShelf from "@/components/ShareShelf";
 
 export default async function ShelfPage({
   params,
@@ -22,6 +24,8 @@ export default async function ShelfPage({
 
   if (!shelf) notFound();
 
+  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/showroom/${shelf.id}`;
+
   const { data: bottles } = await supabase
     .from("bottles")
     .select("*")
@@ -32,8 +36,10 @@ export default async function ShelfPage({
   //bottles as Bottle[];
 
   const topShelfBottles = bottles?.filter((b) => b.top_shelf) ?? [];
-  const regularBottles = bottles?.filter((b) => !b.top_shelf) ?? [];
-
+  const favoriteBottles =
+    bottles?.filter((b) => b.favorite && !b.top_shelf) ?? [];
+  const regularBottles =
+    bottles?.filter((b) => !b.top_shelf && !b.favorite) ?? [];
   return (
     <>
       <Navbar />
@@ -58,7 +64,6 @@ export default async function ShelfPage({
             Add new bottle
           </Link>
         </div>
-
         {/* Top shelf section */}
         {topShelfBottles.length > 0 && (
           <>
@@ -95,6 +100,17 @@ export default async function ShelfPage({
           )
         )}
       </main>
+
+      <Showroom
+        topShelfItems={topShelfBottles}
+        favoriteItems={favoriteBottles}
+        otherItems={regularBottles}
+        background={shelf.background_theme ?? "dark_wood"}
+        ownerName={shelf.owner_name ?? "Collector"}
+        customizable
+        shareUrl={`${process.env.NEXT_PUBLIC_SITE_URL}/showroom/${shelf.id}`}
+        shelfId={shelf.id}
+      />
     </>
   );
 }

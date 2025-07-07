@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabaseBrowser";
@@ -31,7 +30,7 @@ export default function NewBottlePage() {
 
   // Image upload
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [imagePublicUrl, setImagePublicUrl] = useState<string | null>(null);
+  const [compressedBlob, setCompressedBlob] = useState<Blob | null>(null);
 
   useEffect(() => {
     const loadShelf = async () => {
@@ -60,32 +59,15 @@ export default function NewBottlePage() {
   }, [router]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const supabase = createBrowserClient();
     const file = e.target.files?.[0];
     if (!file) return;
 
     setLoading(true);
 
-    const compressedBlob = await compressImage(file, 0.8, 1000);
-    console.log("Compressed size:", compressedBlob.size / 1024, "KB");
+    const compressed = await compressImage(file, 0.8, 1000);
 
-    const filePath = `user-uploads/${Date.now()}-${file.name}`;
-
-    const { error } = await supabase.storage
-      .from("bottle-images")
-      .upload(filePath, compressedBlob);
-
-    if (error) {
-      console.error("Upload error:", error);
-      setLoading(false);
-      return;
-    }
-
-    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/bottle-images/${filePath}`;
-    console.log("Image public URL:", publicUrl);
-
-    setPreviewUrl(URL.createObjectURL(compressedBlob));
-    setImagePublicUrl(publicUrl);
+    setCompressedBlob(compressed);
+    setPreviewUrl(URL.createObjectURL(compressed));
 
     setLoading(false);
   };
@@ -101,13 +83,30 @@ export default function NewBottlePage() {
     const supabase = createBrowserClient();
 
     try {
+      let finalImageUrl = "/bottle.png"; // fallback
+
+      if (compressedBlob) {
+        const filePath = `user-uploads/${Date.now()}-${name.replace(
+          /\s+/g,
+          "-"
+        )}.webp`;
+
+        const { error } = await supabase.storage
+          .from("bottle-images")
+          .upload(filePath, compressedBlob);
+
+        if (error) throw error;
+
+        finalImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/bottle-images/${filePath}`;
+      }
+
       const { error } = await supabase.from("bottles").insert({
         shelf_id: shelfId,
         name,
         distillery,
         vintage,
         notes,
-        image_url: imagePublicUrl || "/bottle.png",
+        image_url: finalImageUrl,
         abv: abv === "" ? null : abv,
         bottle_size: bottleSize === "" ? null : bottleSize,
         region,
@@ -151,6 +150,28 @@ export default function NewBottlePage() {
             onChange={(e) => setName(e.target.value)}
             className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
             required
+          />
+
+          <input
+            type="text"
+            placeholder="Distillery"
+            value={distillery}
+            onChange={(e) => setDistillery(e.target.value)}
+            className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="text"
+            placeholder="Vintage"
+            value={vintage}
+            onChange={(e) => setVintage(e.target.value)}
+            className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <textarea
+            placeholder="Notes"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+            rows={3}
           />
           <div className="flex flex-col items-center space-y-4">
             {/* Upload from gallery */}
@@ -196,28 +217,6 @@ export default function NewBottlePage() {
               </div>
             )}
           </div>
-
-          <input
-            type="text"
-            placeholder="Distillery"
-            value={distillery}
-            onChange={(e) => setDistillery(e.target.value)}
-            className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-          />
-          <input
-            type="text"
-            placeholder="Vintage"
-            value={vintage}
-            onChange={(e) => setVintage(e.target.value)}
-            className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-          />
-          <textarea
-            placeholder="Notes"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-            rows={3}
-          />
         </div>
 
         <div className="pt-6 mt-6 border-t border-zinc-700 space-y-4">

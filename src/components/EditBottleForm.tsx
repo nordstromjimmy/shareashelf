@@ -5,6 +5,7 @@ import { createBrowserClient } from "@/lib/supabaseBrowser";
 import type { Bottle } from "@/types/bottle";
 import ConfirmModal from "./ConfirmModal";
 import compressImage from "@/lib/compressImage";
+import { Camera, Upload } from "lucide-react";
 
 export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   const router = useRouter();
@@ -37,42 +38,20 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     bottle.image_url ?? null
   );
-  const [imagePublicUrl, setImagePublicUrl] = useState<string | null>(
-    bottle.image_url ?? null
-  );
+  const [imagePublicUrl] = useState<string | null>(bottle.image_url ?? null);
+  const [compressedBlob, setCompressedBlob] = useState<Blob | null>(null);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const supabase = createBrowserClient();
     const file = e.target.files?.[0];
     if (!file) return;
 
     setLoading(true);
 
-    const compressedBlob = await compressImage(file, 0.8, 1000);
-    console.log("Compressed size:", compressedBlob.size / 1024, "KB");
+    const compressed = await compressImage(file, 0.8, 1000);
+    console.log("Compressed size:", compressed.size / 1024, "KB");
 
-    const filePath = `user-uploads/${Date.now()}-${file.name}`;
-
-    const { error } = await supabase.storage
-      .from("bottle-images")
-      .upload(filePath, compressedBlob);
-
-    if (error) {
-      console.error("Upload error:", error);
-      setLoading(false);
-      return;
-    }
-
-    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/bottle-images/${filePath}`;
-    console.log("New image public URL:", publicUrl);
-
-    setPreviewUrl(URL.createObjectURL(compressedBlob));
-    setImagePublicUrl(publicUrl);
-
-    if (bottle.image_url) {
-      const oldPath = extractStoragePath(bottle.image_url);
-      await supabase.storage.from("bottle-images").remove([oldPath]);
-    }
+    setCompressedBlob(compressed);
+    setPreviewUrl(URL.createObjectURL(compressed));
 
     setLoading(false);
   };
@@ -84,6 +63,25 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
 
     try {
       const supabase = createBrowserClient();
+      let finalImageUrl = imagePublicUrl ?? bottle.image_url;
+
+      // Upload new image if selected
+      if (compressedBlob) {
+        const filePath = `user-uploads/${Date.now()}-${name.replace(
+          /\s+/g,
+          "-"
+        )}.webp`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("bottle-images")
+          .upload(filePath, compressedBlob);
+
+        if (uploadError) throw uploadError;
+
+        finalImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/bottle-images/${filePath}`;
+      }
+
+      // Update bottle record
       const { error } = await supabase
         .from("bottles")
         .update({
@@ -103,7 +101,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           rating: rating === "" ? null : rating,
           favorite,
           top_shelf: topShelf,
-          image_url: imagePublicUrl ?? bottle.image_url,
+          image_url: finalImageUrl,
         })
         .eq("id", bottle.id);
 
@@ -112,14 +110,17 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
         throw error;
       }
 
+      // Delete old image if a new one was uploaded
+      if (compressedBlob && bottle.image_url) {
+        const oldPath = extractStoragePath(bottle.image_url);
+        await supabase.storage.from("bottle-images").remove([oldPath]);
+      }
+
       router.refresh();
       router.push(`/shelf/${bottle.shelf_id}`);
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErrorMsg(err.message);
-      } else {
-        setErrorMsg("Something went wrong.");
-      }
+      console.error(err);
+      setErrorMsg("Something went wrong.");
     } finally {
       setLoading(false);
     }
@@ -172,25 +173,6 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           required
         />
 
-        {/* IMAGE UPLOAD */}
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleImageUpload}
-          className="w-full p-3 rounded bg-zinc-800 border border-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-600"
-        />
-
-        {previewUrl && (
-          <div className="mt-2 flex justify-center">
-            <img
-              src={previewUrl}
-              alt="Bottle preview"
-              className="rounded shadow max-h-48"
-            />
-          </div>
-        )}
-
         <input
           type="text"
           placeholder="Distillery"
@@ -212,6 +194,50 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
           rows={4}
         />
+        <div className="flex flex-col items-center space-y-4">
+          {/* Upload from gallery */}
+          <input
+            id="file-upload"
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+          <label
+            htmlFor="file-upload"
+            className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg cursor-pointer transition shadow hover:shadow-orange-600/40"
+          >
+            <Upload className="w-6 h-6" />
+            Upload from gallery
+          </label>
+
+          {/* Take photo */}
+          <input
+            id="camera-upload"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+          <label
+            htmlFor="camera-upload"
+            className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg cursor-pointer transition shadow hover:shadow-orange-600/40"
+          >
+            <Camera className="w-6 h-6" />
+            Take photo
+          </label>
+
+          {previewUrl && (
+            <div className="mt-2 flex justify-center">
+              <img
+                src={previewUrl}
+                alt="Bottle preview"
+                className="rounded shadow max-h-48"
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Rest of your inputs unchanged... */}
