@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabaseBrowser";
+import compressImage from "@/lib/compressImage";
 
 export default function NewBottlePage() {
   const router = useRouter();
@@ -10,13 +11,11 @@ export default function NewBottlePage() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Common fields
+  // Fields
   const [name, setName] = useState("");
   const [distillery, setDistillery] = useState("");
   const [vintage, setVintage] = useState("");
   const [notes, setNotes] = useState("");
-
-  // More details
   const [abv, setAbv] = useState<number | "">("");
   const [bottleSize, setBottleSize] = useState<number | "">("");
   const [region, setRegion] = useState("");
@@ -28,6 +27,10 @@ export default function NewBottlePage() {
   const [rating, setRating] = useState<number | "">("");
   const [favorite, setFavorite] = useState(false);
   const [topShelf, setTopShelf] = useState(false);
+
+  // Image upload
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [imagePublicUrl, setImagePublicUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const loadShelf = async () => {
@@ -55,6 +58,37 @@ export default function NewBottlePage() {
     loadShelf();
   }, [router]);
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const supabase = createBrowserClient();
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setLoading(true);
+
+    const compressedBlob = await compressImage(file, 0.6, 800);
+    console.log("Compressed size:", compressedBlob.size / 1024, "KB");
+
+    const filePath = `user-uploads/${Date.now()}-${file.name}`;
+
+    const { error } = await supabase.storage
+      .from("bottle-images")
+      .upload(filePath, compressedBlob);
+
+    if (error) {
+      console.error("Upload error:", error);
+      setLoading(false);
+      return;
+    }
+
+    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/bottle-images/${filePath}`;
+    console.log("Image public URL:", publicUrl);
+
+    setPreviewUrl(URL.createObjectURL(compressedBlob));
+    setImagePublicUrl(publicUrl);
+
+    setLoading(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!shelfId) {
@@ -64,6 +98,7 @@ export default function NewBottlePage() {
 
     setLoading(true);
     const supabase = createBrowserClient();
+
     try {
       const { error } = await supabase.from("bottles").insert({
         shelf_id: shelfId,
@@ -71,7 +106,7 @@ export default function NewBottlePage() {
         distillery,
         vintage,
         notes,
-        image_url: "/bottle.png",
+        image_url: imagePublicUrl || "/bottle.png",
         abv: abv === "" ? null : abv,
         bottle_size: bottleSize === "" ? null : bottleSize,
         region,
@@ -107,7 +142,6 @@ export default function NewBottlePage() {
       {errorMsg && <p className="text-red-500 mb-4">{errorMsg}</p>}
 
       <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
-        {/* Primary fields */}
         <div className="space-y-4">
           <input
             type="text"
@@ -117,6 +151,24 @@ export default function NewBottlePage() {
             className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
             required
           />
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handleImageUpload}
+            className="w-full p-3 rounded bg-zinc-800 border border-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-600"
+          />
+
+          {previewUrl && (
+            <div className="mt-2 flex justify-center">
+              <img
+                src={previewUrl}
+                alt="Preview"
+                className="rounded shadow max-h-48"
+              />
+            </div>
+          )}
+
           <input
             type="text"
             placeholder="Distillery"
@@ -140,10 +192,10 @@ export default function NewBottlePage() {
           />
         </div>
 
-        {/* More details */}
         <div className="pt-6 mt-6 border-t border-zinc-700 space-y-4">
           <h2 className="text-xl font-bold mb-2">Additional details</h2>
           <div className="grid grid-cols-2 gap-4">
+            {/* All your inputs exactly the same */}
             <input
               type="number"
               step="0.1"
@@ -213,7 +265,7 @@ export default function NewBottlePage() {
             />
             <input
               type="text"
-              placeholder="Currency (e.g. SEK, USD)"
+              placeholder="Currency"
               value={pricePaidCurrency}
               onChange={(e) => setPricePaidCurrency(e.target.value)}
               className="p-3 bg-zinc-800 border border-zinc-700 rounded"
@@ -240,7 +292,6 @@ export default function NewBottlePage() {
               />
               <span className="text-zinc-300">Mark as favorite ⭐</span>
             </label>
-
             <label className="inline-flex items-center">
               <input
                 type="checkbox"

@@ -4,9 +4,12 @@ import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabaseBrowser";
 import type { Bottle } from "@/types/bottle";
 import ConfirmModal from "./ConfirmModal";
+import compressImage from "@/lib/compressImage";
 
 export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   const router = useRouter();
+
+  // All your existing fields
   const [name, setName] = useState(bottle.name);
   const [distillery, setDistillery] = useState(bottle.distillery ?? "");
   const [vintage, setVintage] = useState(bottle.vintage ?? "");
@@ -27,11 +30,52 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   const [favorite, setFavorite] = useState(bottle.favorite ?? false);
   const [topShelf, setTopShelf] = useState(bottle.top_shelf ?? false);
 
+  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Image upload
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    bottle.image_url ?? null
+  );
+  const [imagePublicUrl, setImagePublicUrl] = useState<string | null>(
+    bottle.image_url ?? null
+  );
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const supabase = createBrowserClient();
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setLoading(true);
+
+    const compressedBlob = await compressImage(file, 0.6, 800);
+    console.log("Compressed size:", compressedBlob.size / 1024, "KB");
+
+    const filePath = `user-uploads/${Date.now()}-${file.name}`;
+
+    const { error } = await supabase.storage
+      .from("bottle-images")
+      .upload(filePath, compressedBlob);
+
+    if (error) {
+      console.error("Upload error:", error);
+      setLoading(false);
+      return;
+    }
+
+    const publicUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/bottle-images/${filePath}`;
+    console.log("New image public URL:", publicUrl);
+
+    setPreviewUrl(URL.createObjectURL(compressedBlob));
+    setImagePublicUrl(publicUrl);
+
+    setLoading(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
+    setLoading(true);
 
     try {
       const supabase = createBrowserClient();
@@ -54,6 +98,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           rating: rating === "" ? null : rating,
           favorite,
           top_shelf: topShelf,
+          image_url: imagePublicUrl ?? bottle.image_url,
         })
         .eq("id", bottle.id);
 
@@ -70,6 +115,8 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
       } else {
         setErrorMsg("Something went wrong.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -111,6 +158,25 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           required
         />
 
+        {/* IMAGE UPLOAD */}
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleImageUpload}
+          className="w-full p-3 rounded bg-zinc-800 border border-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-600"
+        />
+
+        {previewUrl && (
+          <div className="mt-2 flex justify-center">
+            <img
+              src={previewUrl}
+              alt="Bottle preview"
+              className="rounded shadow max-h-48"
+            />
+          </div>
+        )}
+
         <input
           type="text"
           placeholder="Distillery"
@@ -118,7 +184,6 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           onChange={(e) => setDistillery(e.target.value)}
           className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
         />
-
         <input
           type="text"
           placeholder="Vintage"
@@ -126,7 +191,6 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           onChange={(e) => setVintage(e.target.value)}
           className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
         />
-
         <textarea
           placeholder="Notes"
           value={notes}
@@ -136,6 +200,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
         />
       </div>
 
+      {/* Rest of your inputs unchanged... */}
       <div className="pt-6 mt-6 border-t border-zinc-700 space-y-4">
         <h2 className="text-xl font-bold mb-2">Additional details</h2>
         <div className="grid grid-cols-2 gap-4">
@@ -206,10 +271,9 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
             }
             className="p-3 bg-zinc-800 border border-zinc-700 rounded"
           />
-
           <input
             type="text"
-            placeholder="Currency (e.g. SEK, USD)"
+            placeholder="Currency"
             value={pricePaidCurrency}
             onChange={(e) => setPricePaidCurrency(e.target.value)}
             className="p-3 bg-zinc-800 border border-zinc-700 rounded"
@@ -236,7 +300,6 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
             />
             <span className="text-zinc-300">Mark as favorite</span>
           </label>
-
           <label className="inline-flex items-center">
             <input
               type="checkbox"
@@ -253,7 +316,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
         type="submit"
         className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
       >
-        Save changes
+        {loading ? "Saving..." : "Save changes"}
       </button>
 
       <ConfirmModal

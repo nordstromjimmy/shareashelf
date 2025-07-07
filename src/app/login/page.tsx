@@ -3,6 +3,7 @@ import { createBrowserClient } from "@/lib/supabaseBrowser";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,7 +36,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-zinc-900 px-4 py-8">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-900 px-4 py-8">
+      <Link href="/">
+        <Image
+          src="/logo.png"
+          className="mx-auto mb-8 transition-transform duration-300 hover:scale-105"
+          width={160}
+          height={160}
+          alt="TopShelfy logo"
+        />
+      </Link>
       <div className="w-full max-w-md bg-zinc-800/60 backdrop-blur-md rounded-xl p-8 shadow-xl">
         <h1 className="text-3xl font-bold text-center mb-8">
           Login to your shelf
