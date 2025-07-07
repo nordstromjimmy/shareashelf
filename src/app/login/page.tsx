@@ -26,7 +26,9 @@ export default function LoginPage() {
       email,
       password,
     });
-    if (!error) {
+    if (error) {
+      setErrorMsg(error.message);
+    } else {
       router.refresh();
       router.push("/dashboard");
     }
