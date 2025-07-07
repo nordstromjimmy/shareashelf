@@ -1,7 +1,7 @@
 export default function compressImage(
   file: File,
-  quality = 0.6,
-  maxWidth = 800
+  quality = 0.8,
+  maxWidth = 1000
 ): Promise<Blob> {
   return new Promise((resolve, reject) => {
     const img = new Image();

@@ -56,8 +56,8 @@ export default async function BottleDetailsPage({
 
             <Image
               src={bottle.image_url || "/bottle.png"}
-              width={160}
-              height={12}
+              width={400}
+              height={400}
               className="w-full object-contain rounded"
               alt={bottle.name}
             />

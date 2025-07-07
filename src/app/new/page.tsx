@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabaseBrowser";
 import compressImage from "@/lib/compressImage";
+import { Camera, Upload } from "lucide-react";
 
 export default function NewBottlePage() {
   const router = useRouter();
@@ -65,7 +66,7 @@ export default function NewBottlePage() {
 
     setLoading(true);
 
-    const compressedBlob = await compressImage(file, 0.6, 800);
+    const compressedBlob = await compressImage(file, 0.8, 1000);
     console.log("Compressed size:", compressedBlob.size / 1024, "KB");
 
     const filePath = `user-uploads/${Date.now()}-${file.name}`;
@@ -151,23 +152,50 @@ export default function NewBottlePage() {
             className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
             required
           />
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={handleImageUpload}
-            className="w-full p-3 rounded bg-zinc-800 border border-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-600"
-          />
+          <div className="flex flex-col items-center space-y-4">
+            {/* Upload from gallery */}
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+            <label
+              htmlFor="file-upload"
+              className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg cursor-pointer transition shadow hover:shadow-orange-600/40"
+            >
+              <Upload className="w-6 h-6" />
+              Upload from gallery
+            </label>
 
-          {previewUrl && (
-            <div className="mt-2 flex justify-center">
-              <img
-                src={previewUrl}
-                alt="Preview"
-                className="rounded shadow max-h-48"
-              />
-            </div>
-          )}
+            {/* Take photo */}
+            <input
+              id="camera-upload"
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+            <label
+              htmlFor="camera-upload"
+              className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-lg cursor-pointer transition shadow hover:shadow-orange-600/40"
+            >
+              <Camera className="w-6 h-6" />
+              Take photo
+            </label>
+
+            {previewUrl && (
+              <div className="mt-2 flex justify-center">
+                <img
+                  src={previewUrl}
+                  alt="Bottle preview"
+                  className="rounded shadow max-h-48"
+                />
+              </div>
+            )}
+          </div>
 
           <input
             type="text"

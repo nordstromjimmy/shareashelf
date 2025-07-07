@@ -29,9 +29,10 @@ export default function BottleCard({ bottle }: { bottle: Bottle }) {
 
       <Image
         src={bottle.image_url || "/bottle.png"}
-        width={148}
-        height={12}
-        className="w-full sm:h-40 object-contain rounded mb-3"
+        width={200}
+        height={400}
+        priority
+        className="w-full h-48 object-contain rounded"
         alt={bottle.name}
       />
 

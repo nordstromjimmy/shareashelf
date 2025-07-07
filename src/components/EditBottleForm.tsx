@@ -48,7 +48,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
 
     setLoading(true);
 
-    const compressedBlob = await compressImage(file, 0.6, 800);
+    const compressedBlob = await compressImage(file, 0.8, 1000);
     console.log("Compressed size:", compressedBlob.size / 1024, "KB");
 
     const filePath = `user-uploads/${Date.now()}-${file.name}`;
@@ -68,6 +68,11 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
 
     setPreviewUrl(URL.createObjectURL(compressedBlob));
     setImagePublicUrl(publicUrl);
+
+    if (bottle.image_url) {
+      const oldPath = extractStoragePath(bottle.image_url);
+      await supabase.storage.from("bottle-images").remove([oldPath]);
+    }
 
     setLoading(false);
   };
@@ -123,6 +128,10 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   const handleDelete = async () => {
     const supabase = createBrowserClient();
     try {
+      if (bottle.image_url) {
+        const path = extractStoragePath(bottle.image_url);
+        await supabase.storage.from("bottle-images").remove([path]);
+      }
       const { error } = await supabase
         .from("bottles")
         .delete()
@@ -143,6 +152,11 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
       }
     }
   };
+
+  function extractStoragePath(publicUrl: string): string {
+    const parts = publicUrl.split("/bottle-images/");
+    return parts[1] || "";
+  }
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
