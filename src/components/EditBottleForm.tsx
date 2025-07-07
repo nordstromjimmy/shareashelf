@@ -1,8 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseBrowser";
+import { createBrowserClient } from "@/lib/supabaseBrowser";
 import type { Bottle } from "@/types/bottle";
 import ConfirmModal from "./ConfirmModal";
 
@@ -35,6 +34,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
     setErrorMsg(null);
 
     try {
+      const supabase = createBrowserClient();
       const { error } = await supabase
         .from("bottles")
         .update({
@@ -74,6 +74,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   };
 
   const handleDelete = async () => {
+    const supabase = createBrowserClient();
     try {
       const { error } = await supabase
         .from("bottles")

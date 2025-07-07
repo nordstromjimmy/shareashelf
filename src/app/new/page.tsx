@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseBrowser";
+import { createBrowserClient } from "@/lib/supabaseBrowser";
 
 export default function NewBottlePage() {
   const router = useRouter();
@@ -31,6 +31,7 @@ export default function NewBottlePage() {
 
   useEffect(() => {
     const loadShelf = async () => {
+      const supabase = createBrowserClient();
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -62,6 +63,7 @@ export default function NewBottlePage() {
     }
 
     setLoading(true);
+    const supabase = createBrowserClient();
     try {
       const { error } = await supabase.from("bottles").insert({
         shelf_id: shelfId,

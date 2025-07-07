@@ -2,7 +2,7 @@
 import ConfirmModal from "@/components/ConfirmModal";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { supabase } from "@/lib/supabaseBrowser";
+import { createBrowserClient } from "@/lib/supabaseBrowser";
 
 export default function EditShelfForm({
   shelf,
@@ -15,6 +15,7 @@ export default function EditShelfForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const supabase = createBrowserClient();
     try {
       const { error } = await supabase
         .from("shelves")
@@ -35,6 +36,7 @@ export default function EditShelfForm({
   };
 
   const handleDelete = async () => {
+    const supabase = createBrowserClient();
     try {
       const { error } = await supabase
         .from("shelves")

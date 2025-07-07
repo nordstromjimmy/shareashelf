@@ -1,9 +1,8 @@
 "use client";
-
+import { createBrowserClient } from "@/lib/supabaseBrowser";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import { supabase } from "@/lib/supabaseBrowser";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,14 +11,17 @@ export default function LoginPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleGoogleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const supabase = createBrowserClient();
+    await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
     });
-    if (error) setErrorMsg(error.message);
-    window.location.href = "/dashboard";
   };
 
   const handleLogin = async () => {
+    const supabase = createBrowserClient();
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,

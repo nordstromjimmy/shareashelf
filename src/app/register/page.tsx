@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import { supabase } from "@/lib/supabaseBrowser";
+import { createBrowserClient } from "@/lib/supabaseBrowser";
 
 export default function AuthPage() {
   const router = useRouter();
@@ -12,14 +12,17 @@ export default function AuthPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handleGoogleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const supabase = createBrowserClient();
+    await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: `${location.origin}/auth/callback`,
+      },
     });
-    if (error) setErrorMsg(error.message);
-    window.location.href = "/dashboard";
   };
 
   const handleSignUp = async () => {
+    const supabase = createBrowserClient();
     const { error } = await supabase.auth.signUp({
       email,
       password,
