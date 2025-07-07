@@ -101,6 +101,9 @@ export default async function ShelfPage({
         )}
       </main>
 
+      <div className="bg-zinc-900 text-white px-6 py-6 flex flex-col items-center">
+        <h2 className="text-2xl">Design and share your showroom below</h2>
+      </div>
       <Showroom
         topShelfItems={topShelfBottles}
         favoriteItems={favoriteBottles}

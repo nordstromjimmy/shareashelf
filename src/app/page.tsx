@@ -3,25 +3,38 @@ import Image from "next/image";
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-zinc-900 text-white flex flex-col items-center justify-center px-6 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-900/20 via-zinc-900 to-zinc-900"></div>
-      <div className="pointer-events-none absolute inset-0 bg-[url('/noise.png')] opacity-10"></div>
-      <div className="max-w-2xl text-center z-10 animate-fade-in">
+      {/* Background image */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <Image
+          src="/bg-image.jpg"
+          alt="Whiskey shelf background"
+          fill
+          className="object-cover [object-position:center_right] sm:[object-position:center]"
+          style={{ opacity: 0.25 }}
+        />
+      </div>
+
+      {/* Radial gradient to darken edges */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-transparent via-black/60 to-black/80 z-10"></div>
+
+      {/* Main content */}
+      <div className="max-w-2xl text-center z-30 animate-fade-in">
         <Image
           src="/logo.png"
-          className="mx-auto"
+          className="mx-auto mb-4"
           width={160}
           height={160}
           alt="TopShelfy logo"
         />
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-6">
+        <h1 className="text-5xl md:text-7xl font-extrabold mb-6">
           <span className="bg-gradient-to-r from-orange-500 to-yellow-400 bg-clip-text text-transparent">
-            Show off your whiskey shelf
+            Show off your liquor shelf
           </span>{" "}
           online
         </h1>
         <p className="text-zinc-300 text-lg md:text-xl mb-10">
-          Build a stunning digital shelf, add your bottles, tasting notes, and
-          share with friends. All in minutes.
+          Build a stunning digital shelf, add your bottles and share with
+          friends. <br></br>All in minutes.
         </p>
         <a
           href="/register"

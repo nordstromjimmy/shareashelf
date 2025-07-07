@@ -171,9 +171,15 @@ const Showroom: React.FC<ShowroomProps> = ({
               onChange={(e) => setPreviewBg(e.target.value)}
               className="flex-1 p-3 bg-zinc-800 border border-zinc-700 rounded text-amber-200"
             >
-              <option value="dark_wood">Dark wood</option>
               <option value="neon_bar">Neon bar</option>
               <option value="bar">Standard bar</option>
+              <option value="brick_wall">Brick Wall</option>
+              <option value="wood_wall">Wood Wall</option>
+              <option value="black">Black</option>
+              <option value="space">Space</option>
+              <option value="field">Field</option>
+              <option value="farm">Farm</option>
+              <option value="forest">Forest</option>
             </select>
             <button
               onClick={handleSaveSettings}
