@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function AuthCallback() {
-  useEffect(() => {
-    const router = useRouter();
+  const router = useRouter();
 
+  useEffect(() => {
     const handleRedirect = async () => {
       const supabase = createBrowserClient();
       const {
@@ -21,7 +21,7 @@ export default function AuthCallback() {
     };
 
     handleRedirect();
-  }, []);
+  }, [router]);
 
   return <p className="text-white text-center mt-10">Signing in...</p>;
 }
