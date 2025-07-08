@@ -23,5 +23,9 @@ export default function AuthCallback() {
     handleRedirect();
   }, [router]);
 
-  return <p className="text-white text-center mt-10">Signing in...</p>;
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
 }
