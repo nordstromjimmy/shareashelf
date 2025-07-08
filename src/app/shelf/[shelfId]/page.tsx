@@ -5,7 +5,6 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { Settings } from "lucide-react";
 import Showroom from "@/components/Showroom";
-import ShareShelf from "@/components/ShareShelf";
 
 export default async function ShelfPage({
   params,

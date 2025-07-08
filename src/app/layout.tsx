@@ -1,5 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "TopShelfy - Your Digital Shelf",
@@ -57,6 +58,7 @@ export default function RootLayout({
       <body>
         {children}
         <Toaster position="bottom-center" />
+        <Footer />
       </body>
     </html>
   );

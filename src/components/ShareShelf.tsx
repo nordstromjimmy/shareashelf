@@ -12,11 +12,11 @@ export default function ShareShelf({ url }: { url: string }) {
   };
 
   return (
-    <div className="flex items-center gap-3 mt-4">
+    <div className="flex items-center gap-3">
       <span className="text-zinc-400">Share your shelf:</span>
       <button
         onClick={handleCopy}
-        className="bg-orange-600 hover:bg-orange-700 px-4 py-2 rounded-lg font-semibold transition"
+        className="bg-amber-600 hover:bg-amber-700 px-6 py-3 rounded-lg font-semibold shadow hover:shadow-amber-600/40 transition cursor-pointer text-zinc-900"
       >
         {copied ? "Copied!" : "Copy Link"}
       </button>
