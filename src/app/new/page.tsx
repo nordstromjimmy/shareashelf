@@ -81,12 +81,17 @@ export default function NewBottlePage() {
 
     setLoading(true);
     const supabase = createBrowserClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) throw new Error("Not authenticated");
 
+    const userId = user.id;
     try {
       let finalImageUrl = "/bottle.png"; // fallback
 
       if (compressedBlob) {
-        const filePath = `user-uploads/${Date.now()}-${name.replace(
+        const filePath = `user_${userId}/${Date.now()}-${name.replace(
           /\s+/g,
           "-"
         )}.webp`;

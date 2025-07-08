@@ -63,11 +63,17 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
 
     try {
       const supabase = createBrowserClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const userId = user.id;
       let finalImageUrl = imagePublicUrl ?? bottle.image_url;
 
       // Upload new image if selected
       if (compressedBlob) {
-        const filePath = `user-uploads/${Date.now()}-${name.replace(
+        const filePath = `user_${userId}/${Date.now()}-${name.replace(
           /\s+/g,
           "-"
         )}.webp`;
