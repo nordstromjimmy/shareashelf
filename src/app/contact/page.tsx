@@ -16,6 +16,7 @@ export default function ContactPage() {
         </Link>
         <h1 className="text-4xl font-bold mb-6">Contact TopShelfy</h1>
         <p className="text-zinc-400 mb-8">
+          TopShelfy is a work in progress and is constantly improving. <br />
           Have questions or feedback? We'd love to hear from you. Please reach
           out to us at{" "}
           <a
