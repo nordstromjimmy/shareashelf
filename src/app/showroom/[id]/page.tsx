@@ -35,13 +35,14 @@ export default async function ShowroomPage({
   return (
     <>
       {/* Hero section above showroom */}
-      <div className="bg-zinc-900 text-white py-12 px-6 flex flex-col items-center">
+      <div className="bg-zinc-900 text-white py-8 px-6 flex flex-col items-center">
         <h1 className="text-3xl font-extrabold mb-4">
           Explore this collection
         </h1>
         <p className="text-zinc-400 mb-6 text-center max-w-2xl">
           Want to build your own digital shelf and share your whiskey, rum, or
-          any collection? It only takes a minute.
+          any collection? <br />
+          It only takes a minute.
         </p>
         <Link
           href="/register"
