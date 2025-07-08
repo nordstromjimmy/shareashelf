@@ -1,5 +1,6 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
 import Showroom from "@/components/Showroom";
+import Link from "next/link";
 
 export default async function ShowroomPage({
   params,
@@ -32,13 +33,31 @@ export default async function ShowroomPage({
     bottles?.filter((b) => !b.top_shelf && !b.favorite) ?? [];
 
   return (
-    <Showroom
-      topShelfItems={topShelfBottles}
-      favoriteItems={favoriteBottles}
-      otherItems={regularBottles}
-      background={shelf.background_theme ?? "dark_wood"}
-      ownerName={shelf.owner_name ?? "Collector"}
-      showDetails
-    />
+    <>
+      {/* Hero section above showroom */}
+      <div className="bg-zinc-900 text-white py-12 px-6 flex flex-col items-center">
+        <h1 className="text-3xl font-extrabold mb-4">
+          Explore this collection
+        </h1>
+        <p className="text-zinc-400 mb-6 text-center max-w-2xl">
+          Want to build your own digital shelf and share your whiskey, rum, or
+          any collection? It only takes a minute.
+        </p>
+        <Link
+          href="/register"
+          className="bg-orange-600 hover:bg-orange-700 py-3 px-8 rounded-xl text-lg font-semibold transition shadow hover:shadow-orange-600/40"
+        >
+          Create your own shelf
+        </Link>
+      </div>
+      <Showroom
+        topShelfItems={topShelfBottles}
+        favoriteItems={favoriteBottles}
+        otherItems={regularBottles}
+        background={shelf.background_theme ?? "dark_wood"}
+        ownerName={shelf.owner_name ?? "Collector"}
+        showDetails
+      />
+    </>
   );
 }
