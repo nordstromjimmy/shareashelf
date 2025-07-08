@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import BottleCard from "@/components/BottleCard";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -15,13 +15,28 @@ export default async function ShelfPage({
 
   const supabase = createSupabaseServerClient();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
   const { data: shelf } = await supabase
     .from("shelves")
     .select("*")
     .eq("id", shelfId)
+    .eq("user_id", user.id) // <== super important
     .single();
 
-  if (!shelf) notFound();
+  if (!shelf) {
+    return (
+      <div className="p-6 text-center text-zinc-400">
+        Shelf not found or you do not have access.
+      </div>
+    );
+  }
 
   const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/showroom/${shelf.id}`;
 
