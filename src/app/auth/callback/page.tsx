@@ -1,4 +1,5 @@
 "use client";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { createBrowserClient } from "@/lib/supabaseBrowser";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -25,7 +26,7 @@ export default function AuthCallback() {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="w-12 h-12 border-4 border-orange-600 border-t-transparent rounded-full animate-spin"></div>
+      <LoadingSpinner />
     </div>
   );
 }

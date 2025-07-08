@@ -6,6 +6,11 @@ export default function TermsPage() {
           Terms of Service
         </h1>
         <p className="text-zinc-400 mb-4">
+          By using TopShelfy, you agree that you are of legal drinking age in
+          your jurisdiction. You also agree not to upload offensive or illegal
+          content. We reserve the right to remove content or suspend accounts at
+          our discretion. <br></br>
+          <br />
           By using TopShelfy, you agree to use the platform responsibly. We
           reserve the right to update these terms at any time.
         </p>
