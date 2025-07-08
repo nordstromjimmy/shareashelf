@@ -220,7 +220,7 @@ const Showroom: React.FC<ShowroomProps> = ({
             <img
               src={selectedBottle.image_url || "/bottle.png"}
               alt={selectedBottle.name}
-              className="w-full h-96 object-contain rounded mb-4"
+              className="w-full h-full object-contain rounded mb-4"
             />
             <h2 className="text-2xl font-bold text-amber-200 mb-2 font-serif">
               {selectedBottle.name}
