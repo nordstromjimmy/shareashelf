@@ -353,7 +353,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
               onChange={(e) => setTopShelf(e.target.checked)}
               className="mr-2"
             />
-            <span className="text-zinc-300">Move to top shelf</span>
+            <span className="text-zinc-300">Top shelf</span>
           </label>
         </div>
       </div>
