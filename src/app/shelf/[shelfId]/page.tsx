@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import BottleCard from "@/components/BottleCard";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -142,6 +142,7 @@ export default async function ShelfPage({
         background={shelf.background_theme ?? "dark_wood"}
         ownerName={shelf.owner_name ?? "Collector"}
         customizable
+        allowViewToggle
         shareUrl={shareUrl}
         shelfId={shelf.id}
       />

@@ -57,6 +57,7 @@ export default async function ShowroomPage({
         otherItems={regularBottles}
         background={shelf.background_theme ?? "dark_wood"}
         ownerName={shelf.owner_name ?? "Collector"}
+        allowViewToggle
         showDetails
       />
     </>
