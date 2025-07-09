@@ -29,8 +29,8 @@ export default function Home() {
           online
         </h1>
         <p className="text-zinc-300 text-lg md:text-xl mb-10">
-          Build a stunning digital shelf, add your bottles and share with your
-          friends and community. <br /> All in minutes.
+          Build a stunning digital shelf, add your bottles and <br />
+          share with your friends and community. <br /> All in minutes.
         </p>
         <a
           href="/login"
