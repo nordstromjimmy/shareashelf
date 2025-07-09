@@ -151,7 +151,7 @@ const Showroom: React.FC<ShowroomProps> = ({
             {items.map((bottle) => (
               <div
                 key={bottle.id}
-                className="flex-shrink-0 w-72 snap-center snap-always overflow-hidden cursor-pointer"
+                className="flex-shrink-0 w-48 snap-center snap-always overflow-hidden cursor-pointer"
               >
                 <BottleCard bottle={bottle} />
               </div>
