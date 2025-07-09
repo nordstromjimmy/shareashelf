@@ -275,11 +275,11 @@ const Showroom: React.FC<ShowroomProps> = ({
 
       {selectedBottle && (
         <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 overflow-y-auto"
           onClick={() => setSelectedBottle(null)}
         >
           <div
-            className="bg-zinc-900 rounded-xl p-6 max-w-lg w-full mx-4 relative"
+            className="bg-zinc-900 rounded-xl p-6 max-w-lg w-full mx-4 relative max-h-screen overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button
