@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ShareShelf from "@/components/ShareShelf";
 import { createBrowserClient } from "@/lib/supabaseBrowser";
 import toast from "react-hot-toast";
@@ -59,6 +59,18 @@ const Showroom: React.FC<ShowroomProps> = ({
   const topRef = useRef<HTMLDivElement>(null);
   const favRef = useRef<HTMLDivElement>(null);
   const otherRef = useRef<HTMLDivElement>(null);
+
+  // 🚀 LOCK SCROLL WHEN MODAL OPEN
+  useEffect(() => {
+    if (selectedBottle) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedBottle]);
 
   const handleSaveSettings = async () => {
     if (!shelfId) return;
@@ -179,7 +191,6 @@ const Showroom: React.FC<ShowroomProps> = ({
       <div className="absolute inset-0 bg-black/50"></div>
 
       <div className="relative z-10 w-full flex flex-col items-center">
-        {/* Customization */}
         {customizable && (
           <div className="w-full max-w-5xl mb-8 flex flex-col sm:flex-row flex-wrap gap-4 px-4 justify-center">
             <input
@@ -214,7 +225,6 @@ const Showroom: React.FC<ShowroomProps> = ({
           </div>
         )}
 
-        {/* Toggle */}
         {allowViewToggle && (
           <div className="flex space-x-4 mb-12">
             <button
@@ -242,14 +252,12 @@ const Showroom: React.FC<ShowroomProps> = ({
           </div>
         )}
 
-        {/* Owner name */}
         {previewName && (
           <h1 className="text-4xl font-serif font-bold text-amber-300 mb-16 drop-shadow">
             {previewName}&apos;s Shelf
           </h1>
         )}
 
-        {/* Render sections */}
         {viewMode === "grid" ? (
           <>
             {renderGridSection(topShelfItems, "Top Shelf 🥇")}
@@ -265,7 +273,6 @@ const Showroom: React.FC<ShowroomProps> = ({
         )}
       </div>
 
-      {/* Modal */}
       {selectedBottle && (
         <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
