@@ -143,7 +143,9 @@ const Showroom: React.FC<ShowroomProps> = ({
           </button>
           <div
             ref={ref}
-            className="flex space-x-6 overflow-x-auto overflow-y-hidden px-24 snap-x snap-mandatory"
+            className={`flex space-x-6 overflow-x-auto overflow-y-hidden px-24 snap-x snap-mandatory ${
+              items.length <= 3 ? "md:justify-center" : ""
+            }`}
             style={{ scrollSnapType: "x mandatory", scrollbarWidth: "none" }}
           >
             {items.map((bottle) => (
