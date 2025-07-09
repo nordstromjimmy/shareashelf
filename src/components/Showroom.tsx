@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import ShareShelf from "@/components/ShareShelf";
 import { createBrowserClient } from "@/lib/supabaseBrowser";
 import toast from "react-hot-toast";
+import { X, Grid3x3, ChevronLeft, ChevronRight, Columns3 } from "lucide-react";
 
 type Bottle = {
   id: string;
@@ -52,6 +52,7 @@ const Showroom: React.FC<ShowroomProps> = ({
   const [selectedBottle, setSelectedBottle] = useState<Bottle | null>(null);
   const [previewName, setPreviewName] = useState(ownerName);
   const [previewBg, setPreviewBg] = useState(background);
+  const [viewMode, setViewMode] = useState<"grid" | "slide">("grid");
 
   const createScrollRef = () => useRef<HTMLDivElement>(null);
   const topRef = createScrollRef();
@@ -87,7 +88,46 @@ const Showroom: React.FC<ShowroomProps> = ({
     }
   };
 
-  const renderRow = (
+  const renderGridSection = (items: Bottle[], title: string, badge?: string) =>
+    items.length > 0 && (
+      <div className="w-full max-w-6xl mb-16">
+        <h2 className="text-3xl font-bold mb-8 text-center text-amber-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] font-serif">
+          {title}
+        </h2>
+        <div className="flex flex-wrap justify-center gap-8 px-6">
+          {items.map((bottle) => (
+            <div
+              key={bottle.id}
+              onClick={() => setSelectedBottle(bottle)}
+              className="relative bg-zinc-900/70 backdrop-blur-md p-4 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 border border-amber-800 w-48"
+            >
+              {badge && (
+                <div className="absolute top-2 right-2 bg-amber-500 text-black px-2 py-1 rounded text-xs font-bold">
+                  {badge}
+                </div>
+              )}
+              <img
+                src={bottle.image_url || "/bottle.png"}
+                alt={bottle.name}
+                className="w-full h-64 object-contain rounded"
+              />
+              <div className="text-center mt-3">
+                <div className="text-lg font-semibold text-amber-200 drop-shadow">
+                  {bottle.name}
+                </div>
+                {showDetails && bottle.vintage && (
+                  <div className="text-sm text-amber-100 mt-1">
+                    {bottle.vintage}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+
+  const renderSlideSection = (
     items: Bottle[],
     title: string,
     ref: React.RefObject<HTMLDivElement | null>
@@ -125,9 +165,9 @@ const Showroom: React.FC<ShowroomProps> = ({
                     <div className="text-lg font-semibold text-amber-200 drop-shadow">
                       {bottle.name}
                     </div>
-                    {showDetails && (
-                      <div className="text-sm text-amber-100 mt-1 space-y-1">
-                        {bottle.vintage && <div>{bottle.vintage}</div>}
+                    {showDetails && bottle.vintage && (
+                      <div className="text-sm text-amber-100 mt-1">
+                        {bottle.vintage}
                       </div>
                     )}
                   </div>
@@ -191,15 +231,50 @@ const Showroom: React.FC<ShowroomProps> = ({
           </div>
         )}
 
+        <div className="flex space-x-4 mb-12">
+          <button
+            onClick={() => setViewMode("grid")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+              viewMode === "grid"
+                ? "bg-amber-600 text-zinc-900"
+                : "bg-zinc-800 text-amber-200 hover:bg-amber-700 hover:text-zinc-900"
+            }`}
+          >
+            <Grid3x3 className="w-5 h-5" />
+            Grid
+          </button>
+          <button
+            onClick={() => setViewMode("slide")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+              viewMode === "slide"
+                ? "bg-amber-600 text-zinc-900"
+                : "bg-zinc-800 text-amber-200 hover:bg-amber-700 hover:text-zinc-900"
+            }`}
+          >
+            <Columns3 className="w-5 h-5" />
+            Slide
+          </button>
+        </div>
+
         {previewName && (
-          <h1 className="text-4xl font-serif font-bold text-amber-300 mb-12 drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)]">
+          <h1 className="text-4xl font-serif font-bold text-amber-300 mb-16 drop-shadow-[0_3px_3px_rgba(0,0,0,0.8)]">
             {previewName}&apos;s Shelf
           </h1>
         )}
 
-        {renderRow(topShelfItems, "Top Shelf 🥇", topRef)}
-        {renderRow(favoriteItems, "Favorites ⭐", favRef)}
-        {renderRow(otherItems, "Other Bottles 🍾", otherRef)}
+        {viewMode === "grid" ? (
+          <>
+            {renderGridSection(topShelfItems, "Top Shelf 🥇", "🥇")}
+            {renderGridSection(favoriteItems, "Favorites ⭐", "⭐")}
+            {renderGridSection(otherItems, "Other Bottles 🍾")}
+          </>
+        ) : (
+          <>
+            {renderSlideSection(topShelfItems, "Top Shelf 🥇", topRef)}
+            {renderSlideSection(favoriteItems, "Favorites ⭐", favRef)}
+            {renderSlideSection(otherItems, "Other Bottles 🍾", otherRef)}
+          </>
+        )}
       </div>
 
       {selectedBottle && (
