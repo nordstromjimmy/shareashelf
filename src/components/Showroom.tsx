@@ -59,6 +59,9 @@ const Showroom: React.FC<ShowroomProps> = ({
   const favRef = createScrollRef();
   const otherRef = createScrollRef();
 
+  const cardClass =
+    "relative bg-zinc-900/70 backdrop-blur-md p-4 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 border border-amber-800 w-52";
+
   const handleSaveSettings = async () => {
     if (!shelfId) return;
     const savingToast = toast.loading("Saving showroom...");
@@ -98,8 +101,8 @@ const Showroom: React.FC<ShowroomProps> = ({
           {items.map((bottle) => (
             <div
               key={bottle.id}
+              className={cardClass}
               onClick={() => setSelectedBottle(bottle)}
-              className="relative bg-zinc-900/70 backdrop-blur-md p-4 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 border border-amber-800 w-48"
             >
               {badge && (
                 <div className="absolute top-2 right-2 bg-amber-500 text-black px-2 py-1 rounded text-xs font-bold">
@@ -152,25 +155,23 @@ const Showroom: React.FC<ShowroomProps> = ({
             {items.map((bottle) => (
               <div
                 key={bottle.id}
-                className="flex-shrink-0 w-72 snap-center overflow-hidden cursor-pointer"
+                className={`${cardClass} flex-shrink-0 snap-center`}
                 onClick={() => setSelectedBottle(bottle)}
               >
-                <div className="bg-zinc-900/70 backdrop-blur-md rounded-xl p-4 shadow-xl hover:scale-105 transition-transform duration-300 border border-amber-800">
-                  <img
-                    src={bottle.image_url || "/bottle.png"}
-                    alt={bottle.name}
-                    className="w-full h-80 object-contain rounded"
-                  />
-                  <div className="text-center mt-3">
-                    <div className="text-lg font-semibold text-amber-200 drop-shadow">
-                      {bottle.name}
-                    </div>
-                    {showDetails && bottle.vintage && (
-                      <div className="text-sm text-amber-100 mt-1">
-                        {bottle.vintage}
-                      </div>
-                    )}
+                <img
+                  src={bottle.image_url || "/bottle.png"}
+                  alt={bottle.name}
+                  className="w-full h-64 object-contain rounded"
+                />
+                <div className="text-center mt-3">
+                  <div className="text-lg font-semibold text-amber-200 drop-shadow">
+                    {bottle.name}
                   </div>
+                  {showDetails && bottle.vintage && (
+                    <div className="text-sm text-amber-100 mt-1">
+                      {bottle.vintage}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
