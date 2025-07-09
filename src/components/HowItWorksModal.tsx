@@ -43,7 +43,7 @@ export default function HowItWorksModal() {
     <>
       <button
         onClick={() => setShow(true)}
-        className="bg-zinc-800/60 hover:bg-orange-600 px-4 py-2 mt-4 rounded-lg font-semibold transition shadow z-40 cursor-pointer"
+        className="hover:bg-orange-600 px-4 py-2 mt-4 rounded-lg font-semibold transition shadow z-40 cursor-pointer"
       >
         How it works
       </button>
