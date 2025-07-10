@@ -32,6 +32,7 @@ type ShowroomProps = {
   otherItems?: Bottle[];
   background?: string;
   ownerName?: string;
+  username?: string;
   showDetails?: boolean;
   customizable?: boolean;
   shareUrl?: string;
@@ -45,6 +46,7 @@ const Showroom: React.FC<ShowroomProps> = ({
   otherItems = [],
   background = "dark_wood",
   ownerName = "",
+  username = "",
   showDetails = true,
   customizable = false,
   shareUrl,
@@ -53,7 +55,7 @@ const Showroom: React.FC<ShowroomProps> = ({
 }) => {
   const [selectedBottle, setSelectedBottle] = useState<Bottle | null>(null);
   const [previewName, setPreviewName] = useState(ownerName);
-  const [previewUsername, setPreviewUsername] = useState<string>("");
+  const [previewUsername, setPreviewUsername] = useState<string>(username);
   const [previewBg, setPreviewBg] = useState(background);
   const [viewMode, setViewMode] = useState<"grid" | "slide">("grid");
 
@@ -80,39 +82,46 @@ const Showroom: React.FC<ShowroomProps> = ({
       toast.error("Please enter a shelf name.");
       return;
     }
-    if (!previewUsername.trim()) {
-      toast.error("Please enter a valid username.");
+
+    // sanitize username
+    const sanitizedUsername = previewUsername.trim().toLowerCase();
+
+    // validate only letters, numbers, hyphens or underscores (optional)
+    if (!/^[a-z0-9_-]+$/.test(sanitizedUsername)) {
+      toast.error(
+        "Username must be one word, lowercase, letters, numbers, - or _ only."
+      );
       return;
     }
 
     const supabase = createBrowserClient();
 
-    // 🔍 Check if username is already taken by another shelf
-    const { data: existing, error: existingError } = await supabase
+    // check uniqueness
+    const { data: existing, error: checkError } = await supabase
       .from("shelves")
       .select("id")
-      .eq("username", previewUsername)
-      .neq("id", shelfId)
-      .maybeSingle();
+      .eq("username", sanitizedUsername)
+      .neq("id", shelfId);
 
-    if (existing) {
-      toast.error("Username is already taken. Please choose another.");
+    if (checkError) {
+      console.error("Error checking username:", checkError);
+      toast.error("Failed to validate username.");
       return;
     }
 
-    if (existingError) {
-      console.error("Failed checking username:", existingError);
-      toast.error("Something went wrong checking username.");
+    if (existing.length > 0) {
+      toast.error("That username is already taken.");
       return;
     }
 
     const savingToast = toast.loading("Saving showroom...");
 
+    // update in DB
     const { error } = await supabase
       .from("shelves")
       .update({
         owner_name: previewName,
-        username: previewUsername,
+        username: sanitizedUsername,
         background_theme: previewBg,
       })
       .eq("id", shelfId);

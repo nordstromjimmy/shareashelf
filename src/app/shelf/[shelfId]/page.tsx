@@ -141,6 +141,7 @@ export default async function ShelfPage({
         otherItems={regularBottles}
         background={shelf.background_theme ?? "dark_wood"}
         ownerName={shelf.owner_name ?? "Collector"}
+        username={shelf.username ?? "username"}
         customizable
         allowViewToggle
         shareUrl={shareUrl}
