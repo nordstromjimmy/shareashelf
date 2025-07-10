@@ -49,7 +49,6 @@ const Showroom: React.FC<ShowroomProps> = ({
   username = "",
   showDetails = true,
   customizable = false,
-  shareUrl,
   shelfId,
   allowViewToggle = false,
 }) => {
@@ -58,6 +57,10 @@ const Showroom: React.FC<ShowroomProps> = ({
   const [previewUsername, setPreviewUsername] = useState<string>(username);
   const [previewBg, setPreviewBg] = useState(background);
   const [viewMode, setViewMode] = useState<"grid" | "slide">("grid");
+
+  const [shareUrl, setShareUrl] = useState(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/s/${previewUsername}`
+  );
 
   const topRef = useRef<HTMLDivElement>(null);
   const favRef = useRef<HTMLDivElement>(null);
@@ -83,10 +86,7 @@ const Showroom: React.FC<ShowroomProps> = ({
       return;
     }
 
-    // sanitize username
     const sanitizedUsername = previewUsername.trim().toLowerCase();
-
-    // validate only letters, numbers, hyphens or underscores (optional)
     if (!/^[a-z0-9_-]+$/.test(sanitizedUsername)) {
       toast.error(
         "Username must be one word, lowercase, letters, numbers, - or _ only."
@@ -96,27 +96,19 @@ const Showroom: React.FC<ShowroomProps> = ({
 
     const supabase = createBrowserClient();
 
-    // check uniqueness
     const { data: existing, error: checkError } = await supabase
       .from("shelves")
       .select("id")
       .eq("username", sanitizedUsername)
       .neq("id", shelfId);
 
-    if (checkError) {
-      console.error("Error checking username:", checkError);
-      toast.error("Failed to validate username.");
-      return;
-    }
-
-    if (existing.length > 0) {
+    if (checkError || (existing && existing.length > 0)) {
       toast.error("That username is already taken.");
       return;
     }
 
     const savingToast = toast.loading("Saving showroom...");
 
-    // update in DB
     const { error } = await supabase
       .from("shelves")
       .update({
@@ -130,6 +122,7 @@ const Showroom: React.FC<ShowroomProps> = ({
       console.error("Save failed", error);
       toast.error("Failed to save changes.", { id: savingToast });
     } else {
+      setShareUrl(`${process.env.NEXT_PUBLIC_SITE_URL}/s/${sanitizedUsername}`);
       toast.success("Showroom saved!", { id: savingToast });
     }
   };

@@ -38,7 +38,7 @@ export default async function ShelfPage({
     );
   }
 
-  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/s/${shelf.username}`;
+  /* const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/s/${shelf.username}`; */
 
   const { data: bottles } = await supabase
     .from("bottles")
@@ -144,7 +144,6 @@ export default async function ShelfPage({
         username={shelf.username ?? "username"}
         customizable
         allowViewToggle
-        shareUrl={shareUrl}
         shelfId={shelf.id}
       />
     </>
