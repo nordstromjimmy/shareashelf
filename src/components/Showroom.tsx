@@ -92,16 +92,15 @@ const Showroom: React.FC<ShowroomProps> = ({
       .from("shelves")
       .select("id")
       .eq("username", previewUsername)
-      .neq("id", shelfId) // ensure it doesn't block the user's own username
-      .single();
+      .neq("id", shelfId)
+      .maybeSingle();
 
     if (existing) {
       toast.error("Username is already taken. Please choose another.");
       return;
     }
 
-    if (existingError && existingError.code !== "PGRST116") {
-      // `PGRST116` = no rows found (safe)
+    if (existingError) {
       console.error("Failed checking username:", existingError);
       toast.error("Something went wrong checking username.");
       return;
