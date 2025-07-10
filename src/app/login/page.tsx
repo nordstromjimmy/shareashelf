@@ -51,10 +51,6 @@ export default function LoginPage() {
           Login to your shelf
         </h1>
 
-        {errorMsg && (
-          <div className="text-red-500 mb-4 text-center">{errorMsg}</div>
-        )}
-
         <button
           onClick={handleGoogleSignIn}
           className="flex items-center justify-center gap-3 bg-white text-zinc-900 font-semibold py-3 px-6 rounded-lg hover:bg-zinc-100 transition w-full mb-6 shadow cursor-pointer"
@@ -81,6 +77,9 @@ export default function LoginPage() {
             className="w-full p-3 rounded bg-zinc-800 border border-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-orange-600"
           />
         </div>
+        {errorMsg && (
+          <div className="text-red-500 mb-4 mt-4 text-center">{errorMsg}</div>
+        )}
 
         <button
           onClick={handleLogin}
