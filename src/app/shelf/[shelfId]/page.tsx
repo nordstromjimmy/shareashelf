@@ -38,7 +38,7 @@ export default async function ShelfPage({
     );
   }
 
-  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/showroom/${shelf.id}`;
+  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/s/${shelf.username}`;
 
   const { data: bottles } = await supabase
     .from("bottles")

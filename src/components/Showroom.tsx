@@ -53,6 +53,7 @@ const Showroom: React.FC<ShowroomProps> = ({
 }) => {
   const [selectedBottle, setSelectedBottle] = useState<Bottle | null>(null);
   const [previewName, setPreviewName] = useState(ownerName);
+  const [previewUsername, setPreviewUsername] = useState<string>("");
   const [previewBg, setPreviewBg] = useState(background);
   const [viewMode, setViewMode] = useState<"grid" | "slide">("grid");
 
@@ -74,12 +75,45 @@ const Showroom: React.FC<ShowroomProps> = ({
 
   const handleSaveSettings = async () => {
     if (!shelfId) return;
-    const savingToast = toast.loading("Saving showroom...");
+
+    if (!previewName.trim()) {
+      toast.error("Please enter a shelf name.");
+      return;
+    }
+    if (!previewUsername.trim()) {
+      toast.error("Please enter a valid username.");
+      return;
+    }
+
     const supabase = createBrowserClient();
+
+    // 🔍 Check if username is already taken by another shelf
+    const { data: existing, error: existingError } = await supabase
+      .from("shelves")
+      .select("id")
+      .eq("username", previewUsername)
+      .neq("id", shelfId) // ensure it doesn't block the user's own username
+      .single();
+
+    if (existing) {
+      toast.error("Username is already taken. Please choose another.");
+      return;
+    }
+
+    if (existingError && existingError.code !== "PGRST116") {
+      // `PGRST116` = no rows found (safe)
+      console.error("Failed checking username:", existingError);
+      toast.error("Something went wrong checking username.");
+      return;
+    }
+
+    const savingToast = toast.loading("Saving showroom...");
+
     const { error } = await supabase
       .from("shelves")
       .update({
         owner_name: previewName,
+        username: previewUsername,
         background_theme: previewBg,
       })
       .eq("id", shelfId);
@@ -197,8 +231,15 @@ const Showroom: React.FC<ShowroomProps> = ({
               type="text"
               value={previewName}
               onChange={(e) => setPreviewName(e.target.value)}
-              className="flex-1 p-3 bg-zinc-800 border border-zinc-700 rounded text-amber-200 placeholder-amber-400 min-w-[220px]"
+              className="flex-1 p-3 bg-zinc-800 border border-zinc-700 rounded text-amber-200 placeholder-amber-100/20 min-w-[220px]"
               placeholder="Owner name"
+            />
+            <input
+              type="text"
+              value={previewUsername}
+              onChange={(e) => setPreviewUsername(e.target.value)}
+              className="flex-1 p-3 bg-zinc-800 border border-zinc-700 rounded text-amber-200 placeholder-amber-100/20 min-w-[220px]"
+              placeholder="Topshelfy.com/your-name"
             />
             <select
               value={previewBg}
@@ -215,6 +256,7 @@ const Showroom: React.FC<ShowroomProps> = ({
               <option value="farm">Farm</option>
               <option value="forest">Forest</option>
             </select>
+
             <button
               onClick={handleSaveSettings}
               className="bg-amber-600 hover:bg-amber-700 px-6 py-3 rounded-lg font-semibold shadow hover:shadow-amber-600/40 transition cursor-pointer text-zinc-900"
