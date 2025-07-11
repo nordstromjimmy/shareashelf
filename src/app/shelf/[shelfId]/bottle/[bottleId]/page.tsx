@@ -26,9 +26,9 @@ export default async function BottleDetailsPage({
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           <Link
             href={`/shelf/${shelfId}`}
-            className="text-orange-400 hover:text-orange-500"
+            className="inline-block bg-orange-600 hover:bg-orange-700 py-2 px-6 rounded-xl text-lg font-semibold transition shadow hover:shadow-orange-600/40"
           >
-            ← Back to shelf
+            Back
           </Link>
           <Link
             href={`/edit/${bottle.id}`}

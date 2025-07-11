@@ -344,7 +344,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
               onChange={(e) => setFavorite(e.target.checked)}
               className="mr-2"
             />
-            <span className="text-zinc-300">Mark as favorite</span>
+            <span className="text-zinc-300">Favorite</span>
           </label>
           <label className="inline-flex items-center">
             <input
@@ -357,14 +357,6 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           </label>
         </div>
       </div>
-
-      <button
-        type="submit"
-        className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
-      >
-        {loading ? "Saving..." : "Save changes"}
-      </button>
-
       <ConfirmModal
         title="Delete bottle"
         message="Are you sure you want to delete this bottle?"
@@ -372,11 +364,17 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
       >
         <button
           type="button"
-          className="w-full bg-red-600 hover:bg-red-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-red-600/40 cursor-pointer"
+          className="w-full bg-red-600 hover:bg-red-700 py-3 px-6 mb-4 rounded-xl text-xl font-semibold transition shadow hover:shadow-red-600/40 cursor-pointer"
         >
           Delete bottle
         </button>
       </ConfirmModal>
+      <button
+        type="submit"
+        className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
+      >
+        {loading ? "Saving..." : "Save changes"}
+      </button>
     </form>
   );
 }

@@ -322,7 +322,7 @@ export default function NewBottlePage() {
                 onChange={(e) => setFavorite(e.target.checked)}
                 className="mr-2"
               />
-              <span className="text-zinc-300">Mark as favorite ⭐</span>
+              <span className="text-zinc-300">Favorite ⭐</span>
             </label>
             <label className="inline-flex items-center">
               <input

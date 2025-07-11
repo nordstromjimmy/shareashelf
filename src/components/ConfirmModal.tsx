@@ -6,7 +6,7 @@ export default function ConfirmModal({
   onConfirm,
   title,
   message,
-  confirmText = "Yes",
+  confirmText = "Delete",
   children,
 }: {
   onConfirm: () => void;
@@ -22,11 +22,11 @@ export default function ConfirmModal({
       <span onClick={() => setOpen(true)}>{children}</span>
 
       {open && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black p-2 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-zinc-800 p-6 rounded-xl max-w-sm w-full text-center">
             <h2 className="text-xl font-bold mb-4">{title}</h2>
             <p className="text-zinc-300 mb-6">{message}</p>
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center gap-20">
               <button
                 onClick={() => setOpen(false)}
                 className="px-4 py-2 bg-zinc-600 hover:bg-zinc-700 rounded cursor-pointer"

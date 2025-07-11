@@ -68,12 +68,6 @@ export default function EditShelfForm({
         className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
         required
       />
-      <button
-        type="submit"
-        className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
-      >
-        Save changes
-      </button>
       <ConfirmModal
         onConfirm={handleDelete}
         title="Delete shelf"
@@ -81,11 +75,17 @@ export default function EditShelfForm({
       >
         <button
           type="button"
-          className="w-full bg-red-600 hover:bg-red-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-red-600/40 cursor-pointer"
+          className="w-full bg-red-600 hover:bg-red-700 py-3 px-6 mb-4 rounded-xl text-xl font-semibold transition shadow hover:shadow-red-600/40 cursor-pointer"
         >
           Delete shelf
         </button>
       </ConfirmModal>
+      <button
+        type="submit"
+        className="w-full bg-orange-600 hover:bg-orange-700 py-3 px-6 rounded-xl text-xl font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
+      >
+        Save changes
+      </button>
     </form>
   );
 }
