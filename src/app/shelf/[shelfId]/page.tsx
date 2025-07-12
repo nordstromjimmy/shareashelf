@@ -140,8 +140,8 @@ export default async function ShelfPage({
         favoriteItems={favoriteBottles}
         otherItems={regularBottles}
         background={shelf.background_theme ?? "dark_wood"}
-        ownerName={shelf.owner_name ?? "Collector"}
-        username={shelf.username ?? "username"}
+        ownerName={shelf.owner_name ?? ""}
+        username={shelf.username ?? ""}
         customizable
         allowViewToggle
         shelfId={shelf.id}

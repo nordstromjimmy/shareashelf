@@ -240,7 +240,7 @@ const Showroom: React.FC<ShowroomProps> = ({
               value={previewUsername}
               onChange={(e) => setPreviewUsername(e.target.value)}
               className="flex-1 p-3 bg-zinc-800 border border-zinc-700 rounded text-amber-200 placeholder-amber-100/20 min-w-[220px]"
-              placeholder="Topshelfy.com/your-name"
+              placeholder="topshelfy.com/s/your-name"
             />
             <select
               value={previewBg}
