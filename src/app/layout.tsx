@@ -15,27 +15,27 @@ export const metadata = {
     "whiskey tasting notes",
   ],
   openGraph: {
-    title: "TopShelf - Your Digital Liqour Shelf",
+    title: "TopShelfy - Your Digital Liqour Shelf",
     description: "Show off your whiskey bottles and tasting notes online.",
-    url: "https://topshelf.com",
-    siteName: "TopShelf",
+    url: "https://topshelfy.com",
+    siteName: "TopShelfy",
     images: [
       {
-        url: "https://topshelf.com/og-image.jpg",
+        url: "https://topshelfy.com/og-image.png",
         width: 1200,
         height: 630,
-        alt: "TopShelf - Your Whiskey Collection",
+        alt: "TopShelfy - Your Whiskey Collection",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@topshelf",
-    title: "TopShelf - Your Digital Whiskey Shelf",
+    site: "@topshelfy",
+    title: "TopShelfy - Your Digital Whiskey Shelf",
     description:
       "Create a beautiful whiskey shelf online, add your bottles, and share it with friends.",
-    image: "https://topshelf.com/og-image.jpg",
+    image: "https://topshelfy.com/og-image.png",
   },
 };
 

@@ -2,6 +2,43 @@ import HandleResetRedirect from "@/components/HandleResetRedirect";
 import Image from "next/image";
 import HowItWorksModal from "@/components/HowItWorksModal";
 
+export const metadata = {
+  title: "TopShelfy - Your Digital Shelf",
+  description:
+    "Create a stunning digital liqour shelf, add tasting notes, and share with friends in minutes.",
+  keywords: [
+    "whiskey collection",
+    "whiskey shelf",
+    "digital shelf",
+    "liqour shelf",
+    "top shelf",
+    "whiskey tasting notes",
+  ],
+  openGraph: {
+    title: "TopShelfy - Your Digital Liqour Shelf",
+    description: "Show off your whiskey bottles and tasting notes online.",
+    url: "https://topshelfy.com",
+    siteName: "TopShelfy",
+    images: [
+      {
+        url: "https://topshelfy.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TopShelfy - Your Whiskey Collection",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@topshelfy",
+    title: "TopShelfy - Your Digital Whiskey Shelf",
+    description:
+      "Create a beautiful whiskey shelf online, add your bottles, and share it with friends.",
+    image: "https://topshelfy.com/og-image.png",
+  },
+};
+
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-zinc-900 text-white flex flex-col items-center justify-center px-6 overflow-hidden">
