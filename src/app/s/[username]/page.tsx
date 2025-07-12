@@ -1,6 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
 import Showroom from "@/components/Showroom";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 export default async function ShelfByUsernamePage({
   params,
@@ -19,17 +20,7 @@ export default async function ShelfByUsernamePage({
     .single();
 
   if (!shelf) {
-    return (
-      <main className="min-h-screen bg-zinc-900 text-white flex items-center justify-center p-6">
-        <div className="text-center space-y-4">
-          <h1 className="text-3xl font-bold">Shelf not found</h1>
-          <p className="text-zinc-400">
-            The shelf for <span className="text-orange-400">{username}</span>{" "}
-            does not exist.
-          </p>
-        </div>
-      </main>
-    );
+    notFound();
   }
 
   // Fetch bottles for that shelf
