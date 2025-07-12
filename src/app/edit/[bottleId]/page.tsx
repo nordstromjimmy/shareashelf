@@ -18,31 +18,20 @@ export default async function EditBottlePage({
     redirect("/login");
   }
 
-  // fetch the shelf, ensure it's owned by this user
-  const { data: shelf, error } = await supabase
-    .from("shelves")
-    .select("*")
-    .eq("id", shelfId)
-    .eq("user_id", user.id) // 👈 this is critical
-    .single();
-
-  if (!shelf) {
-    // either because no shelf or it's not theirs
-    notFound();
-  }
-
-  // then load the bottle, or whatever
   const { data: bottle } = await supabase
     .from("bottles")
-    .select("*")
+    .select(
+      `
+      *,
+      shelf:shelf_id ( user_id )
+    `
+    )
     .eq("id", bottleId)
-    .eq("shelf_id", shelfId) // just to be safe
     .single();
 
-  if (!bottle) {
+  if (!bottle || bottle.shelf.user_id !== user.id) {
     notFound();
   }
-
   return (
     <main className="min-h-screen bg-zinc-900 text-white px-6 py-12 flex flex-col items-center">
       <h1 className="text-3xl font-extrabold mb-6">Edit bottle</h1>
