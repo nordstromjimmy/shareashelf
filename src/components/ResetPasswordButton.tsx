@@ -37,7 +37,7 @@ export default function ResetPasswordButton() {
     <button
       onClick={handlePasswordReset}
       disabled={isPending}
-      className="bg-orange-600 hover:bg-orange-700 py-2 px-6 rounded-lg text-lg font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
+      className="bg-orange-600 hover:bg-orange-700 py-2 px-4 text-lg rounded-lg font-semibold transition shadow hover:shadow-orange-600/40 cursor-pointer"
     >
       {isPending ? "Sending..." : "Reset Password"}
     </button>

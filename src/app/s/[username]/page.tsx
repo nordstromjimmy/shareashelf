@@ -58,7 +58,7 @@ export default async function ShelfByUsernamePage({
         </p>
         <Link
           href="/register"
-          className="bg-orange-600 hover:bg-orange-700 py-3 px-8 rounded-xl text-lg font-semibold transition shadow hover:shadow-orange-600/40"
+          className="bg-orange-600 hover:bg-orange-700 py-3 px-4 rounded-lg text-lg font-semibold transition shadow hover:shadow-orange-600/40"
         >
           Create your own shelf
         </Link>
@@ -72,6 +72,22 @@ export default async function ShelfByUsernamePage({
         allowViewToggle
         showDetails
       />
+      <div className="bg-zinc-900 text-white py-8 px-6 flex flex-col items-center">
+        <h1 className="text-3xl font-extrabold mb-4">
+          Explore this collection
+        </h1>
+        <p className="text-zinc-400 mb-6 text-center max-w-2xl">
+          Want to build your own digital shelf and share your whiskey, rum, or
+          any collection? <br />
+          It only takes a minute.
+        </p>
+        <Link
+          href="/register"
+          className="bg-orange-600 hover:bg-orange-700 py-3 px-4 rounded-lg text-lg font-semibold transition shadow hover:shadow-orange-600/40"
+        >
+          Create your own shelf
+        </Link>
+      </div>
     </>
   );
 }

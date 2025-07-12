@@ -272,7 +272,7 @@ const Showroom: React.FC<ShowroomProps> = ({
           <div className="flex space-x-4 mb-12">
             <button
               onClick={() => setViewMode("grid")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition cursor-pointer ${
                 viewMode === "grid"
                   ? "bg-amber-600 text-zinc-900"
                   : "bg-zinc-800 text-amber-200 hover:bg-amber-700 hover:text-zinc-900"
@@ -283,7 +283,7 @@ const Showroom: React.FC<ShowroomProps> = ({
             </button>
             <button
               onClick={() => setViewMode("slide")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition cursor-pointer ${
                 viewMode === "slide"
                   ? "bg-amber-600 text-zinc-900"
                   : "bg-zinc-800 text-amber-200 hover:bg-amber-700 hover:text-zinc-900"
