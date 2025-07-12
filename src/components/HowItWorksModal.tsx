@@ -10,19 +10,19 @@ export default function HowItWorksModal() {
   const steps = [
     {
       image: "/howitworks/1.png",
-      title: "Create your shelf",
+      title: "1. Create your digital shelf with ease",
     },
     {
       image: "/howitworks/2.png",
-      title: "Add your bottles",
+      title: "2. Add your bottles",
     },
     {
       image: "/howitworks/3.png",
-      title: "Customize and share your shelf",
+      title: "3. Customize and share your shelf with a unique link",
     },
     {
       image: "/howitworks/4.png",
-      title: "Let people inspect your bottles",
+      title: "4. Let people inspect your bottles and read your notes",
     },
   ];
 
