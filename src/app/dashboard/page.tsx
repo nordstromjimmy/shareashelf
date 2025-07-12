@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import ResetToast from "@/components/ResetToast";
 import ResetPasswordButton from "@/components/ResetPasswordButton";
+import FeedbackForm from "@/components/FeedbackForm";
 
 export default async function DashboardPage() {
   const supabase = createSupabaseServerClient();
@@ -102,6 +103,9 @@ export default async function DashboardPage() {
           <div className="mt-6">
             <LogoutButton />
           </div>
+        </div>
+        <div className="w-full max-w-2xl mt-10 bg-zinc-800/60 rounded-xl p-6 shadow-lg">
+          <FeedbackForm />
         </div>
       </main>
     </>
