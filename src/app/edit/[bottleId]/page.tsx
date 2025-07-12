@@ -1,6 +1,6 @@
 import EditBottleForm from "@/components/EditBottleForm";
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function EditBottlePage({
   params,
@@ -9,6 +9,14 @@ export default async function EditBottlePage({
 }) {
   const supabase = createSupabaseServerClient();
   const { bottleId } = await params;
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   const { data: bottle } = await supabase
     .from("bottles")

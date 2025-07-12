@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from "@/lib/supabaseServer";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { Star, Trophy } from "lucide-react";
 import Image from "next/image";
@@ -11,6 +11,14 @@ export default async function BottleDetailsPage({
 }) {
   const { bottleId, shelfId } = await params;
   const supabase = createSupabaseServerClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
 
   const { data: bottle } = await supabase
     .from("bottles")
