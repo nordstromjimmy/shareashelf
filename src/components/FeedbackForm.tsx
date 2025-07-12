@@ -14,7 +14,7 @@ export default function FeedbackForm() {
         <form
           action="https://formspree.io/f/xnnveeyl"
           method="POST"
-          //onSubmit={() => setSubmitted(true)}
+          onSubmit={() => setSubmitted(true)}
           className="space-y-4"
         >
           <textarea
