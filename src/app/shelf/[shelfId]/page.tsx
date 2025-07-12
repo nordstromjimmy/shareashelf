@@ -57,6 +57,12 @@ export default async function ShelfPage({
     <>
       <Navbar />
       <main className="min-h-screen bg-zinc-900 text-white px-6 py-12 flex flex-col items-center">
+        <div className="mb-4 text-blue-300 hover:text-blue-500">
+          <Link href="/dashboard">
+            Experience bugs or have feedback? Send us a message!
+          </Link>
+        </div>
+
         <div className="w-full max-w-5xl mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-center sm:text-left">
           <div className="flex flex-col sm:flex-row items-center gap-4 justify-center sm:justify-start">
             <h1 className="text-3xl sm:text-4xl font-extrabold">
