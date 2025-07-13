@@ -140,20 +140,17 @@ const Showroom: React.FC<ShowroomProps> = ({
   const BottleCard = ({ bottle }: { bottle: Bottle }) => (
     <div
       onClick={() => setSelectedBottle(bottle)}
-      className="relative bg-zinc-900/70 backdrop-blur-md p-4 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 border border-zinc-600 w-48"
+      className="relative bg-zinc-900/70 backdrop-blur-md p-4 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 border border-amber-800 w-48 h-80 flex flex-col justify-between"
     >
       <img
         src={bottle.image_url || "/bottle.png"}
         alt={bottle.name}
-        className="w-full h-64 object-contain rounded"
+        className="w-full h-56 object-contain rounded"
       />
       <div className="text-center mt-3">
-        <div className="text-lg font-semibold text-amber-200 drop-shadow">
+        <div className="text-lg font-semibold text-amber-200 drop-shadow truncate">
           {bottle.name}
         </div>
-        {showDetails && bottle.vintage && (
-          <div className="text-sm text-amber-100 mt-1">{bottle.vintage}</div>
-        )}
       </div>
     </div>
   );
