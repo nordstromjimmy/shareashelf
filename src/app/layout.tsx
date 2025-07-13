@@ -12,6 +12,7 @@ export const metadata = {
     "digital shelf",
     "liqour shelf",
     "top shelf",
+    "share whiskey collection",
     "whiskey tasting notes",
   ],
   openGraph: {

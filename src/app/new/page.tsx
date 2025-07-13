@@ -88,7 +88,7 @@ export default function NewBottlePage() {
 
     const userId = user.id;
     try {
-      let finalImageUrl = "/bottle.png"; // fallback
+      let finalImageUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/bottle.png`;
 
       if (compressedBlob) {
         const filePath = `user_${userId}/${Date.now()}-${name.replace(

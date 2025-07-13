@@ -57,7 +57,7 @@ export default async function ShelfPage({
     <>
       <Navbar />
       <main className="min-h-screen bg-zinc-900 text-white px-6 py-12 flex flex-col items-center">
-        <div className="mb-6 text-blue-300 hover:bg-zinc-800 border border-zinc-700 p-3">
+        <div className="mb-6 text-blue-300 hover:bg-zinc-800 border border-zinc-700 p-3 cursor-pointer">
           <Link href="/dashboard">
             Experience bugs or have feedback? Send us a message!
           </Link>
@@ -145,7 +145,7 @@ export default async function ShelfPage({
         topShelfItems={topShelfBottles}
         favoriteItems={favoriteBottles}
         otherItems={regularBottles}
-        background={shelf.background_theme ?? "dark_wood"}
+        background={shelf.background_theme ?? "bar"}
         ownerName={shelf.owner_name ?? ""}
         username={shelf.username ?? ""}
         customizable
