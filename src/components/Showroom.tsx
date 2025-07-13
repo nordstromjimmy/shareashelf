@@ -376,7 +376,9 @@ const Showroom: React.FC<ShowroomProps> = ({
                 <div>Rating: {selectedBottle.rating}/100</div>
               )}
               {selectedBottle.notes && (
-                <div className="italic">"{selectedBottle.notes}"</div>
+                <div className="italic mt-4">
+                  Tasting notes: "{selectedBottle.notes}"
+                </div>
               )}
             </div>
           </div>
