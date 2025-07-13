@@ -27,6 +27,7 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
   const [pricePaidCurrency, setPricePaidCurrency] = useState(
     bottle.price_paid_currency ?? ""
   );
+  const [priceCurrentValue, setPriceCurrentValue] = useState<number | "">("");
   const [rating, setRating] = useState(bottle.rating ?? "");
   const [favorite, setFavorite] = useState(bottle.favorite ?? false);
   const [topShelf, setTopShelf] = useState(bottle.top_shelf ?? false);
@@ -48,7 +49,6 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
     setLoading(true);
 
     const compressed = await compressImage(file, 0.8, 1000);
-    console.log("Compressed size:", compressed.size / 1024, "KB");
 
     setCompressedBlob(compressed);
     setPreviewUrl(URL.createObjectURL(compressed));
@@ -186,15 +186,8 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           onChange={(e) => setDistillery(e.target.value)}
           className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
         />
-        <input
-          type="text"
-          placeholder="Vintage"
-          value={vintage}
-          onChange={(e) => setVintage(e.target.value)}
-          className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-        />
         <textarea
-          placeholder="Notes"
+          placeholder="Tasting notes"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
@@ -326,9 +319,28 @@ export default function EditBottleForm({ bottle }: { bottle: Bottle }) {
           />
           <input
             type="number"
+            step="0.01"
+            placeholder="Current value"
+            value={priceCurrentValue}
+            onChange={(e) =>
+              setPriceCurrentValue(
+                e.target.value === "" ? "" : parseFloat(e.target.value)
+              )
+            }
+            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="text"
+            placeholder="Vintage"
+            value={vintage}
+            onChange={(e) => setVintage(e.target.value)}
+            className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+          />
+          <input
+            type="number"
             min="0"
             max="100"
-            placeholder="Rating"
+            placeholder="Rating 0/100"
             value={rating}
             onChange={(e) =>
               setRating(e.target.value === "" ? "" : parseInt(e.target.value))

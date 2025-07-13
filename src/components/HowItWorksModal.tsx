@@ -22,7 +22,7 @@ export default function HowItWorksModal() {
     },
     {
       image: "/howitworks/4.png",
-      title: "4. Let people inspect your bottles and read your notes",
+      title: "4. Let people inspect your bottles and read your tasting notes",
     },
   ];
 

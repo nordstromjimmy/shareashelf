@@ -3,7 +3,6 @@ export type Bottle = {
   shelf_id: string;
   name: string;
   distillery: string | null;
-  vintage: string | null;
   notes: string | null;
   image_url: string | null;
   created_at: string;
@@ -15,6 +14,7 @@ export type Bottle = {
   cask_type: string | null; // e.g. Sherry, Bourbon
   age: number | null; // age statement (years)
   bottling_year: number | null;
+  vintage: string | null;
   price_paid_value: number | null; // $ or your currency
   price_paid_currency: string | null;
   current_value: number | null; // updated over time

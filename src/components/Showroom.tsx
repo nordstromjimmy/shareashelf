@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ShareShelf from "@/components/ShareShelf";
 import { createBrowserClient } from "@/lib/supabaseBrowser";
 import toast from "react-hot-toast";
+import Image from "next/image";
 import { X, Grid3x3, ChevronLeft, ChevronRight, Columns3 } from "lucide-react";
 
 type Bottle = {
@@ -331,12 +332,17 @@ const Showroom: React.FC<ShowroomProps> = ({
             >
               <X className="w-6 h-6" />
             </button>
-            <img
-              src={selectedBottle.image_url || "/bottle.png"}
-              alt={selectedBottle.name}
-              className="w-full h-full object-contain rounded mb-4"
-            />
-            <h2 className="text-2xl font-bold text-amber-200 mb-2 font-serif">
+            <div className="flex justify-center mb-6">
+              <div className="relative w-64 h-96">
+                <Image
+                  src={selectedBottle.image_url || "/bottle.png"}
+                  alt={selectedBottle.name}
+                  fill
+                  className="object-contain rounded"
+                />
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-amber-200 mt-4 mb-2 font-serif">
               {selectedBottle.name}
             </h2>
             <div className="space-y-1 text-amber-100">

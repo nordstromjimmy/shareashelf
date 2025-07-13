@@ -36,7 +36,7 @@ export default function BottleCard({ bottle }: { bottle: Bottle }) {
         alt={bottle.name}
       />
 
-      <h2 className="text-lg font-bold mb-1 truncate">{bottle.name}</h2>
+      <h2 className="text-lg font-bold mt-6 mb-1 truncate">{bottle.name}</h2>
       <p className="text-zinc-400 text-sm truncate">{bottle.distillery}</p>
 
       {bottle.vintage && (

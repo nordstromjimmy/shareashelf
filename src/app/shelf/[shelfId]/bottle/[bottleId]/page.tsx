@@ -48,7 +48,7 @@ export default async function BottleDetailsPage({
     <main className="min-h-screen bg-zinc-900 text-white px-6 py-12 flex flex-col items-center">
       <div className="max-w-2xl w-full">
         <div className="bg-zinc-800 p-6 rounded-xl shadow mb-6 relative">
-          <div className="relative mb-6">
+          <div className="relative mb-6 flex justify-center">
             {bottle.top_shelf && (
               <div className="absolute top-2 left-2" title="Top shelf">
                 <Trophy className="w-6 h-6 text-yellow-400" />
@@ -65,9 +65,9 @@ export default async function BottleDetailsPage({
 
             <Image
               src={bottle.image_url || "/bottle.png"}
-              width={400}
+              width={400} // intrinsic optimization
               height={400}
-              className="w-full object-contain rounded"
+              className="max-w-xs w-full h-128 object-contain rounded"
               alt={bottle.name}
             />
           </div>
@@ -93,6 +93,9 @@ export default async function BottleDetailsPage({
                 {bottle.price_paid_currency}
               </p>
             )}
+            {bottle.current_value && (
+              <p>Current value: {bottle.current_value} USD</p>
+            )}
             {bottle.rating && (
               <p className="text-orange-400">Rating: {bottle.rating}/100</p>
             )}
@@ -100,7 +103,7 @@ export default async function BottleDetailsPage({
 
           {bottle.notes && (
             <div className="mt-6">
-              <h2 className="text-xl font-bold mb-2">Notes</h2>
+              <h2 className="text-xl font-bold mb-2">Tasting notes</h2>
               <p className="text-zinc-300 whitespace-pre-line">
                 {bottle.notes}
               </p>

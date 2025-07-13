@@ -24,6 +24,7 @@ export default function NewBottlePage() {
   const [bottlingYear, setBottlingYear] = useState<number | "">("");
   const [pricePaidValue, setPricePaidValue] = useState<number | "">("");
   const [pricePaidCurrency, setPricePaidCurrency] = useState<string | "">("");
+  const [priceCurrentValue, setPriceCurrentValue] = useState<number | "">("");
   const [rating, setRating] = useState<number | "">("");
   const [favorite, setFavorite] = useState(false);
   const [topShelf, setTopShelf] = useState(false);
@@ -164,15 +165,9 @@ export default function NewBottlePage() {
             onChange={(e) => setDistillery(e.target.value)}
             className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
           />
-          <input
-            type="text"
-            placeholder="Vintage"
-            value={vintage}
-            onChange={(e) => setVintage(e.target.value)}
-            className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
-          />
+
           <textarea
-            placeholder="Notes"
+            placeholder="Tasting notes"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
@@ -283,6 +278,7 @@ export default function NewBottlePage() {
               }
               className="p-3 bg-zinc-800 border border-zinc-700 rounded"
             />
+
             <input
               type="number"
               step="0.01"
@@ -304,9 +300,28 @@ export default function NewBottlePage() {
             />
             <input
               type="number"
+              step="0.01"
+              placeholder="Current value"
+              value={priceCurrentValue}
+              onChange={(e) =>
+                setPriceCurrentValue(
+                  e.target.value === "" ? "" : parseFloat(e.target.value)
+                )
+              }
+              className="p-3 bg-zinc-800 border border-zinc-700 rounded"
+            />
+            <input
+              type="text"
+              placeholder="Vintage"
+              value={vintage}
+              onChange={(e) => setVintage(e.target.value)}
+              className="block w-full p-3 bg-zinc-800 border border-zinc-700 rounded"
+            />
+            <input
+              type="number"
               min="0"
               max="100"
-              placeholder="Rating"
+              placeholder="Rating 0/100"
               value={rating}
               onChange={(e) =>
                 setRating(e.target.value === "" ? "" : parseInt(e.target.value))
