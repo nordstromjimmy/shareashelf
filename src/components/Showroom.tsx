@@ -140,7 +140,7 @@ const Showroom: React.FC<ShowroomProps> = ({
   const BottleCard = ({ bottle }: { bottle: Bottle }) => (
     <div
       onClick={() => setSelectedBottle(bottle)}
-      className="relative bg-zinc-900/70 backdrop-blur-md p-4 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 border border-amber-800 w-48 h-80 flex flex-col justify-between"
+      className="relative bg-zinc-900/70 backdrop-blur-md p-4 rounded-xl shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 border border-zinc-500 w-48 h-80 flex flex-col justify-between"
     >
       <img
         src={bottle.image_url || "/bottle.png"}
